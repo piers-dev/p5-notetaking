@@ -9,6 +9,8 @@ function checkBounds(x,y,lowx,highx,lowy,highy) {
         && (y < highy && y > lowy));
 }
 
+
+
 class Node {
 
     constructor(x, y, name) {
@@ -83,7 +85,6 @@ class Node {
         if (this.isHovered) hoverUsed = true;
 
 
-        let color = this.mode ? specialColor : foregroundColor;
 
         let targetSize = this.sizeMultiplier;
 
@@ -95,6 +96,7 @@ class Node {
         this.width = textWidth(this.name) + 20;
         this.height = 50 * this.sizeMultiplier;
 
+        let color = this.mode ? specialColor : foregroundColor;
 
         if (editingSelf) {
             if (this.input == null) {
@@ -171,11 +173,14 @@ class Node {
             //createParticleBurst(this.x,this.y,0.5*this.size,2*this.size,1,3,1,1,5,true);
             fill(color+"05");
             strokeWeight(this.isHovered ? 3.5 : 1.5);
-            stroke(color);
+            stroke(specialColor);
             circle(this.x+width/2+xPan-10,this.y+height/2+yPan,lerp(this.size*this.size,this.sizeMultiplier*this.sizeMultiplier,0.5)*1000);
         }
-        fill(color);
 
+        console.log(color);
+
+
+        
         if (!editingSelf) {
 
             if (Date.now() - this.lastClicked < 200 && plmb && !lmb) {
@@ -221,8 +226,9 @@ class Node {
                     targetSize *= this.mode ? 1.1 : 1.3;
                 }
                 fill(this.isSelected ? color : backgroundColor);
-                stroke(color);
                 strokeWeight(this.isSelected ? 0 : 3);
+                stroke(color);
+
                 rect((((this.x+width/2) - 10) - this.width / 2)+xPan, ((this.y+height/2) - 25 * this.size)+yPan, this.width, 50 * this.size, 15)
 
 

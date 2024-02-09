@@ -188,6 +188,8 @@ function objToNodes(array) {
         n.push(node);
 
     });
+
+    
     return n;
 }
 
@@ -240,10 +242,11 @@ function draw() {
     dy = mouseY - pmouseY;
 
 
-
-    background(backgroundColor); // Set the background to black
     fill(backgroundColor);
-    noStroke();
+    stroke(backgroundColor);
+    strokeWeight(2);
+    rect(0,0,width,height); // Set the background to black
+    fill(foregroundColor);
 
 
     if (!hoverUsed && mmb) {
@@ -293,12 +296,20 @@ function draw() {
 
 
     //drawParticles();
-    fill("#00000000")
+    fill(foregroundColor)
+    stroke(foregroundColor)
+
+
+
+    
     nodes.forEach((n) => {
         if (!n.mode) return;
         let nd = n.drawSelf();
         selection = selection || nd;
     });
+    fill(foregroundColor);
+    stroke(foregroundColor);
+
     nodes.forEach((n) => {
         if (n.mode) return;
         nodes.forEach((nf) => {
@@ -331,6 +342,14 @@ function draw() {
     pmmb = mmb;
 
 
+
+    if (nodes.length < 1) {
+        fill(foregroundColor);
+        noStroke();
+
+        textSize(40);
+        text("Double-Click to Add Node", 20, height - 20);
+    }
 }
 
 
