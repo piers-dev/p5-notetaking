@@ -61,8 +61,8 @@ class Node {
         let editingOther = !editingSelf && (editing != -1)
 
 
-        let mouseOver = ((pmx < this.x - 10 + this.width / 2 && pmx > this.x - 10 - this.width / 2)
-        && (pmy < this.y + this.height / 2 && pmy > this.y - this.height / 2));
+        let mouseOver = ((pmx-xPan < this.x - 10 + this.width / 2 && pmx-xPan > this.x - 10 - this.width / 2)
+        && (pmy-yPan < this.y + this.height / 2 && pmy-yPan > this.y - this.height / 2));
 
         this.isHovered = ((mouseOver && !hoverUsed) || this.isSelected) && editing == -1;
 
@@ -115,7 +115,7 @@ class Node {
 
             this.height = 50*this.size/2;
 
-            this.input.position((this.x+width/2)-this.width/2,(this.y+height/2)-this.height);
+            this.input.position(((this.x+width/2)-this.width/2)+xPan,((this.y+height/2)-this.height)+yPan);
 
             this.input.size(this.width,this.height*2);
             this.input.style('font-size',`${40*this.size}px`);
@@ -192,7 +192,7 @@ class Node {
                 fill(this.isSelected ? foregroundColor : backgroundColor);
                 stroke(foregroundColor);
                 strokeWeight(this.isSelected ? 0 : 3);
-                rect(((this.x+width/2) - 10) - this.width / 2, (this.y+height/2) - 25 * this.size, this.width, 50 * this.size, 15)
+                rect((((this.x+width/2) - 10) - this.width / 2)+xPan, ((this.y+height/2) - 25 * this.size)+yPan, this.width, 50 * this.size, 15)
 
 
                 fill(this.isSelected ? backgroundColor : foregroundColor);
@@ -202,7 +202,7 @@ class Node {
 
             //this.input.position(((this.x) - this.width / 2)+width/2, ((this.y) + 15)+height/2);
 
-            text(this.name, (this.x+width/2) - this.width / 2, (this.y+height/2) + 15 * this.size);
+            text(this.name, ((this.x+width/2) - this.width / 2)+xPan, ((this.y+height/2) + 15 * this.size)+yPan);
         }
         
 

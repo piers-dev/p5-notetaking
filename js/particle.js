@@ -56,7 +56,7 @@ class Particle {
 
         let r = this.radius*(1-this.time/this.lifetime);
 
-        circle(this.x+width/2,this.y+height/2,Math.max(r,0));
+        circle((this.x+width/2)+xPan,(this.y+height/2)+yPan,Math.max(r,0));
 
         
     }

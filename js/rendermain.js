@@ -24,6 +24,13 @@ let removalQueue = new Array();
 
 let editing = -1;
 
+
+
+let xPan = 0;
+let yPan = 0;
+let xPanVel = 0; 
+let yPanVel = 0;
+
 function getWidth() {
     return bgdiv.clientWidth;
 }
@@ -193,16 +200,17 @@ function draw() {
     }
 
 
+    pmx = mx;
+    pmy = my;
+
     mx = mouseX - width / 2;
     my = mouseY - height / 2;
-
-    pmx = pmouseX - width / 2;
-    pmy = pmouseY - height / 2;
 
 
     dx = mouseX - pmouseX;
     dy = mouseY - pmouseY;
 
+    
 
     background(backgroundColor); // Set the background to black
     fill(backgroundColor);
@@ -228,13 +236,11 @@ function draw() {
         }
     }
 
-    lmb = lmb || touches.length >= 1;
-
     let selection = false;
 
     removalQueue = new Array();
 
-
+    //createParticleBurst(Math.random()*width-width/2-xPan,Math.random()*height-height/2-yPan,0.1,0.3,1,3,Math.random()*3,1,15);
 
     drawParticles();
 
@@ -252,10 +258,20 @@ function draw() {
         if (editing != -1) {
             editing = -1;
         }
-        else if (lmb && !plmb) {
-            
-        }
     }
+
+    if (!selection && !hoverUsed && mmb) {
+        xPanVel = lerp(xPanVel,dx,1);
+        yPanVel = lerp(yPanVel,dy,1);
+    }
+    else{
+        xPanVel = lerp(xPanVel,0,0.1);
+        yPanVel = lerp(yPanVel,0,0.1);
+
+    }
+
+    xPan += xPanVel;
+    yPan += yPanVel;
 
 
     removalQueue.forEach((i) => {
@@ -286,8 +302,8 @@ function keyPressed() {
 
 function doubleClicked(event) {
     if (editing != -1) return;
-    nodes.push(new Node(mx, my, "New Note"));
+    nodes.push(new Node(mx-xPan, my-yPan, "New Note"));
     editing = nodes.length - 1;
-    createParticleBurst(mx, my, 1, 5, 5, 10, 10, 0.5, 1);
+    createParticleBurst(mx-xPan, my-yPan, 1, 5, 5, 10, 10, 0.5, 1);
 }
 
