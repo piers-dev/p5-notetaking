@@ -95,8 +95,9 @@ class Node {
                 this.input.style('border-color',foregroundColor);
                 this.input.style('background-color',backgroundColor);
                 this.input.style('color',foregroundColor);
+                this.input.style('user-select','text');
+
                 //this.input.style('border-width','6px');
-                this.input.elt.setSelectionRange(this.name.length-1,this.name.length-1);
                 this.input.attribute('maxlength', 20);
             }
 
