@@ -228,6 +228,8 @@ function draw() {
         }
     }
 
+    lmb = lmb || touches.length >= 1;
+
     let selection = false;
 
     removalQueue = new Array();
