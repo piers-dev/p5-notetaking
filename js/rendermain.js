@@ -37,6 +37,9 @@ let zoomDelta = 0;
 
 let bgp = document.getElementById('bg');
 
+let ogp = document.getElementById('og');
+
+
 let fgp = document.getElementById('fg');
 
 let sgp = document.getElementById('sg');
@@ -92,6 +95,11 @@ function updateBG() {
 
 }
 
+function updateOG() {
+    localStorage.setItem('ogColor', outgroundColor);
+
+}
+
 function updateFG() {
     localStorage.setItem('fgColor', foregroundColor);
 }
@@ -127,15 +135,30 @@ function setup() {
 
 
     let bg = localStorage.getItem('bgColor');
+    let og = localStorage.getItem('ogColor');
+
     let fg = localStorage.getItem('fgColor');
     let sg = localStorage.getItem('sgColor');
 
+    let z = localStorage.getItem('zoom');
+    let xp = localStorage.getItem('xPan');
+    let yp = localStorage.getItem('yPan');
+
     if (bg != null) backgroundColor = bg;
+    if (og != null) outgroundColor = og;
+
     if (fg != null) foregroundColor = fg;
     if (sg != null) specialColor = sg;
 
+    if (z != null) zoom = parseFloat(z);
+    if (xp != null) xPan = parseFloat(xp);
+    if (yp != null) yPan = parseFloat(yp);
+
+
 
     document.getElementById('fg').value = foregroundColor;
+    document.getElementById('og').value = outgroundColor;
+
     document.getElementById('bg').value = backgroundColor;
     document.getElementById('sg').value = specialColor;
 
@@ -153,6 +176,10 @@ function setup() {
 
     setInterval(() => {
         localStorage.setItem("nodes", JSON.stringify(nodesToObj(nodes)));
+        localStorage.setItem("zoom",zoom);
+        localStorage.setItem("xPan",xPan);
+        localStorage.setItem("yPan",yPan);
+
 
     }, 2500);
 
@@ -176,7 +203,20 @@ function setup() {
     });
 
 }
+function radiusClamp(x,y,radius,x2,y2) {
+    let nx = x-x2;
+    let ny = y-y2;
 
+    let l = Math.sqrt(nx*nx+ny*ny);
+
+    if (l > radius) {
+        return {
+            'x': (nx/l)*radius+x2,
+            'y': (ny/l)*radius+y2
+        };
+    }
+    else return {'x': x, 'y':y};
+}
 
 function objToNodes(array) {
     let n = new Array()
@@ -214,13 +254,17 @@ function nodesToObj(array) {
 // line is executed again.
 function draw() {
 
-
+    
     backgroundColor = bgp.value;
 
     foregroundColor = fgp.value;
     specialColor = sgp.value;
 
+    outgroundColor = ogp.value;
+
     r.style.setProperty('--foreground', foregroundColor);
+    r.style.setProperty('--outground', outgroundColor);
+
     r.style.setProperty('--background', backgroundColor);
     r.style.setProperty('--special', specialColor);
 
@@ -234,30 +278,51 @@ function draw() {
     pmx = mx;
     pmy = my;
 
-    mx = mouseX - width / 2;
-    my = mouseY - height / 2;
+    mx = (mouseX/zoom) - width / 2;
+    my = (mouseY/zoom) - height / 2;
 
 
-    dx = mouseX - pmouseX;
-    dy = mouseY - pmouseY;
 
 
-    fill(backgroundColor);
+    dx = (mouseX - pmouseX)/zoom;
+    dy = (mouseY - pmouseY)/zoom;
+
+
+    fill(outgroundColor);
     stroke(backgroundColor);
     strokeWeight(2);
     rect(0,0,width,height); // Set the background to black
+
+
+    fill(backgroundColor);
+    stroke(foregroundColor);
+
+    
+    strokeWeight(6*zoom);
+    circle(zoom*width/2+xPan,zoom*height/2+yPan,5050*zoom);
+    
+    
+
+    strokeWeight(10*zoom);
+    circle(zoom*width/2+xPan,zoom*height/2+yPan,5000*zoom);
+
+    
+
+
+
     fill(foregroundColor);
+
+
+
 
 
     if (!hoverUsed && mmb) {
 
-        xPanVel = dx;
-        yPanVel = dy;
+        xPanVel = dx*zoom;
+        yPanVel = dy*zoom;
         //createParticleBurst(Math.random() * width - width / 2 - xPan, Math.random() * height - height / 2 - yPan, 0.1, 0.3, 2, 5, Math.random() * 3, 1, 2);
 
-        //this.sizeMultiplier -= (delta * this.sizeMultiplier) / 1000;
-        //this.sizeMultiplier = Math.max(this.sizeMultiplier, 0.5);
-        //this.sizeMultiplier = Math.min(this.sizeMultiplier, 5);
+        
 
     }
     else {
@@ -268,6 +333,19 @@ function draw() {
 
     xPan += xPanVel;
     yPan += yPanVel;
+
+
+    //console.log(mx+", "+my)
+
+let dxp = (zoom*width/2)-width/2;
+let dyp = (zoom*height/2)-height/2;
+
+    let newPan = radiusClamp(xPan,yPan,2450*zoom,-dxp,-dyp);
+
+
+
+    xPan = newPan['x'];
+    yPan = newPan['y'];
 
 
     hoverUsed = false;
@@ -360,7 +438,19 @@ function mouseWheel(event) {
         eventUsed = eventUsed || nh;
     });
 
-    if (!eventUsed) zoom += event.delta;
+    if (!eventUsed) {
+        let oldzoom = zoom;
+        zoom -= (event.delta * zoom) / 1000;
+        zoom = Math.max(zoom, 0.2);
+        zoom = Math.min(zoom, 2);
+
+        let zd = zoom-oldzoom;
+
+        xPan -= (width/2)*zd;
+        yPan -= (height/2)*zd;
+        
+
+    }
 }
 
 function keyPressed() {
@@ -371,7 +461,7 @@ function keyPressed() {
 
 function doubleClicked(event) {
     if (editing != -1) return;
-    nodes.push(new Node(mx - xPan, my - yPan, "New Note"));
+    nodes.push(new Node(mx - xPan/zoom, my - yPan/zoom, "New Note"));
     editing = nodes.length - 1;
     //createParticleBurst(mx - xPan, my - yPan, 1, 5, 5, 10, 10, 0.5, 1);
 }
