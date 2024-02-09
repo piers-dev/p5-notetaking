@@ -1,5 +1,5 @@
 let backgroundColor = "#202029";
-let outgroundColor = "#0c021f";
+let outgroundColor = "#0e0d11";
 
 let foregroundColor = "#e6176a";
 let specialColor = "#2bc7ff";
