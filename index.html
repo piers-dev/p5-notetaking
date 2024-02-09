@@ -7,6 +7,9 @@
     </head>
     <body>
         <input type="file" style="display: none;" id="fileLoad" accept=".board" onchange="loadFromFile()" />
+        <input type="color" id="bg" onchange="updateBG()">
+        <input type="color" id="fg" onchange="updateFG()">
+
         <div id="canvas" oncontextmenu="return false;"></div>
         <script src="js/words.js"></script>
         <script src="js/particle.js"></script>

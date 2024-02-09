@@ -69,6 +69,18 @@ function download(data, filename, type) {
     }
 }
 
+function updateBG() {
+    backgroundColor = document.getElementById('bg').value;
+    localStorage.setItem('bgColor',backgroundColor);
+
+}
+
+function updateFG() {
+    foregroundColor = document.getElementById('fg').value;
+    localStorage.setItem('fgColor',foregroundColor);
+}
+
+
 // The statements in the setup() function
 // execute once when the program begins
 function setup() {
@@ -77,6 +89,8 @@ function setup() {
     myCanvas = createCanvas(getWidth(), getHeight(), WEBGL);
 
     myCanvas.parent("canvas");
+
+    
 
     stroke(255); // Set line drawing color to white
     //frameRate(30);
@@ -88,8 +102,22 @@ function setup() {
     //nodes.push(new Node(-302,0,"I like tests"));
 
 
+    
+
+
+
+    let bg = localStorage.getItem('bgColor');
+    let fg = localStorage.getItem('fgColor');
+
+    if (bg != null) backgroundColor = bg;
+    if (fg != null) foregroundColor = fg;
+
+    document.getElementById('fg').value = foregroundColor;
+    document.getElementById('bg').value = backgroundColor;
 
     let s = localStorage.getItem("nodes");
+
+
 
     if (s != null) nodes = objToNodes(JSON.parse(s));
 
@@ -223,9 +251,7 @@ function draw() {
             editing = -1;
         }
         else if (lmb && !plmb) {
-            nodes.push(new Node(mx, my, "New Note"));
-            editing = nodes.length - 1;
-            createParticleBurst(mx, my, 1, 5, 5, 10, 10, 0.5, 1);
+            
         }
     }
 
@@ -254,5 +280,12 @@ function keyPressed() {
     if (keyCode === ENTER || keyCode === ESCAPE) {
         editing = -1;
     }
+}
+
+function doubleClicked(event) {
+    if (editing != -1) return;
+    nodes.push(new Node(mx, my, "New Note"));
+    editing = nodes.length - 1;
+    createParticleBurst(mx, my, 1, 5, 5, 10, 10, 0.5, 1);
 }
 

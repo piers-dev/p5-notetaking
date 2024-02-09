@@ -25,6 +25,7 @@ html, body {
     border-radius: 15px;
 
     border-style: solid;
+    
 
     border-color: var(--foreground);
 
@@ -33,4 +34,21 @@ html, body {
     border-width: 6px;
 
     
+}
+
+#bg,#fg {
+    position: absolute;
+    border: none;
+    border-color: transparent;
+    outline: none;
+    stroke:none;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    margin: 0;
+    outline-color: transparent;
+
+}
+#fg {
+    left: 50px;
 }
