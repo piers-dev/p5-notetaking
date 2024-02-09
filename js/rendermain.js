@@ -176,9 +176,9 @@ function setup() {
 
     setInterval(() => {
         localStorage.setItem("nodes", JSON.stringify(nodesToObj(nodes)));
-        localStorage.setItem("zoom",zoom);
-        localStorage.setItem("xPan",xPan);
-        localStorage.setItem("yPan",yPan);
+        localStorage.setItem("zoom", zoom);
+        localStorage.setItem("xPan", xPan);
+        localStorage.setItem("yPan", yPan);
 
 
     }, 2500);
@@ -203,19 +203,19 @@ function setup() {
     });
 
 }
-function radiusClamp(x,y,radius,x2,y2) {
-    let nx = x-x2;
-    let ny = y-y2;
+function radiusClamp(x, y, radius, x2, y2) {
+    let nx = x - x2;
+    let ny = y - y2;
 
-    let l = Math.sqrt(nx*nx+ny*ny);
+    let l = Math.sqrt(nx * nx + ny * ny);
 
     if (l > radius) {
         return {
-            'x': (nx/l)*radius+x2,
-            'y': (ny/l)*radius+y2
+            'x': (nx / l) * radius + x2,
+            'y': (ny / l) * radius + y2
         };
     }
-    else return {'x': x, 'y':y};
+    else return { 'x': x, 'y': y };
 }
 
 function objToNodes(array) {
@@ -229,7 +229,7 @@ function objToNodes(array) {
 
     });
 
-    
+
     return n;
 }
 
@@ -254,7 +254,7 @@ function nodesToObj(array) {
 // line is executed again.
 function draw() {
 
-    
+
     backgroundColor = bgp.value;
 
     foregroundColor = fgp.value;
@@ -278,35 +278,35 @@ function draw() {
     pmx = mx;
     pmy = my;
 
-    mx = (mouseX/zoom) - width / 2;
-    my = (mouseY/zoom) - height / 2;
+    mx = (mouseX / zoom) - width / 2;
+    my = (mouseY / zoom) - height / 2;
 
 
 
 
-    dx = (mouseX - pmouseX)/zoom;
-    dy = (mouseY - pmouseY)/zoom;
+    dx = (mouseX - pmouseX) / zoom;
+    dy = (mouseY - pmouseY) / zoom;
 
 
     fill(outgroundColor);
     stroke(backgroundColor);
     strokeWeight(2);
-    rect(0,0,width,height); // Set the background to black
+    rect(0, 0, width, height); // Set the background to black
 
 
     fill(backgroundColor);
     stroke(foregroundColor);
 
-    
-    strokeWeight(6*zoom);
-    circle(zoom*width/2+xPan,zoom*height/2+yPan,5050*zoom);
-    
-    
 
-    strokeWeight(10*zoom);
-    circle(zoom*width/2+xPan,zoom*height/2+yPan,5000*zoom);
+    strokeWeight(6 * zoom);
+    circle(zoom * width / 2 + xPan, zoom * height / 2 + yPan, 5050 * zoom);
 
-    
+
+
+    strokeWeight(10 * zoom);
+    circle(zoom * width / 2 + xPan, zoom * height / 2 + yPan, 5000 * zoom);
+
+
 
 
 
@@ -318,11 +318,11 @@ function draw() {
 
     if (!hoverUsed && mmb) {
 
-        xPanVel = dx*zoom;
-        yPanVel = dy*zoom;
+        xPanVel = dx * zoom;
+        yPanVel = dy * zoom;
         //createParticleBurst(Math.random() * width - width / 2 - xPan, Math.random() * height - height / 2 - yPan, 0.1, 0.3, 2, 5, Math.random() * 3, 1, 2);
 
-        
+
 
     }
     else {
@@ -337,10 +337,10 @@ function draw() {
 
     //console.log(mx+", "+my)
 
-let dxp = (zoom*width/2)-width/2;
-let dyp = (zoom*height/2)-height/2;
+    let dxp = (zoom * width / 2) - width / 2;
+    let dyp = (zoom * height / 2) - height / 2;
 
-    let newPan = radiusClamp(xPan,yPan,2450*zoom,-dxp,-dyp);
+    let newPan = radiusClamp(xPan, yPan, 2450 * zoom, -dxp, -dyp);
 
 
 
@@ -379,7 +379,7 @@ let dyp = (zoom*height/2)-height/2;
 
 
 
-    
+
     nodes.forEach((n) => {
         if (!n.mode) return;
         let nd = n.drawSelf();
@@ -441,14 +441,24 @@ function mouseWheel(event) {
     if (!eventUsed) {
         let oldzoom = zoom;
         zoom -= (event.delta * zoom) / 1000;
-        zoom = Math.max(zoom, 0.2);
+        zoom = Math.max(zoom, 0.25);
         zoom = Math.min(zoom, 2);
 
-        let zd = zoom-oldzoom;
+        let zd = zoom - oldzoom;
 
-        xPan -= (width/2)*zd;
-        yPan -= (height/2)*zd;
-        
+        xPan -= (width / 2) * zd;
+        yPan -= (height / 2) * zd;
+
+
+        let dxp = (zoom * width / 2) - width / 2;
+        let dyp = (zoom * height / 2) - height / 2;
+
+        let newPan = radiusClamp(xPan, yPan, 2450 * zoom, -dxp, -dyp);
+
+
+
+        xPan = newPan['x'];
+        yPan = newPan['y'];
 
     }
 }
@@ -461,7 +471,7 @@ function keyPressed() {
 
 function doubleClicked(event) {
     if (editing != -1) return;
-    nodes.push(new Node(mx - xPan/zoom, my - yPan/zoom, "New Note"));
+    nodes.push(new Node(mx - xPan / zoom, my - yPan / zoom, "New Note"));
     editing = nodes.length - 1;
     //createParticleBurst(mx - xPan, my - yPan, 1, 5, 5, 10, 10, 0.5, 1);
 }

@@ -246,6 +246,7 @@ class Node {
                     this.x += dx;
                     this.y += dy;
                     targetSize *= this.mode ? 1.1 : 1.3;
+                    this.attractionForce *= 2;
                 }
                 fill(this.isSelected ? color : backgroundColor);
                 strokeWeight(this.isSelected ? 0 : 3*zoom);
