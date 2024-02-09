@@ -16,32 +16,66 @@ class Node {
         this.width = textWidth(this.name) + 20;
         this.height = 50;
 
-        this.size = 0.05;
+    
 
-        this.widthMultiplier = 1;
-        this.heightMultiplier = 1;
+        //this.input = createInput(name);
+        //this.input.input(() => {
+        //    this.name = inp.value();
+        // });
+
+
+
+        this.size = 0.2;
+
+        this.sizeMultiplier = 1;
 
         this.lastClicked = 0;
+
+        this.isHovered = false;
     }
 
+    processKeyCode(keyCode) {
 
+    }
+
+    processMouse(delta) {
+        if (this.isHovered) {
+            this.sizeMultiplier -= (delta*this.sizeMultiplier)/1000;
+            this.sizeMultiplier = Math.max(this.sizeMultiplier,0.5);
+            this.sizeMultiplier = Math.min(this.sizeMultiplier,5);
+        }
+    }
 
     drawSelf() {
 
-        let targetSize = 1;
+
+
+        this.isHovered = (((pmx < this.x-10 + this.width / 2 && pmx > this.x - 10 - this.width / 2)
+        && (pmy < this.y + this.height / 2 && pmy > this.y - this.height / 2)) && !hoverUsed) || this.isSelected;
+
+            
+        if (this.isHovered) hoverUsed = true;
+
+
+
+
+        let targetSize = this.sizeMultiplier;
+
+
 
         textSize(40*this.size);
 
         this.width = textWidth(this.name) + 20;
+        this.height = 50*this.sizeMultiplier;
 
         
 
 
-        this.xVel -= (this.x);
-        this.yVel -= (this.y);
+        this.xVel -= (this.x)*this.sizeMultiplier;
+        this.yVel -= (this.y)*this.sizeMultiplier;
 
-        this.x = Math.min(Math.max(this.x,-width/2),width/2);
-        this.y = Math.min(Math.max(this.y,-height/2),height/2);
+        //this.x = Math.min(Math.max(this.x,-width/2),width/2);
+        //this.y = Math.min(Math.max(this.y,-height/2),height/2);
 
         this.xVel = lerp(this.xVel, 0, 0.5);
         this.yVel = lerp(this.yVel, 0, 0.5);
@@ -55,18 +89,18 @@ class Node {
         this.x += this.xVel / 30;
         this.y += this.yVel / 30;
 
-        let isHovered = ((pmx < this.x-10 + this.width / 2 && pmx > this.x - 10 - this.width / 2)
-            && (pmy < this.y + this.height / 2 && pmy > this.y - this.height / 2))
-
+        
+        if (Math.abs(this.xVel)+Math.abs(this.yVel) > 200) {
+            createParticleBurst(this.x,this.y,1,5,2,5,1,0.2,1);
+        }
 
 
 
         fill(foregroundColor);
 
 
-        if (isHovered && !mouseWasPressed && mouseIsPressed && !hoverUsed) {
+        if (this.isHovered && !plmb && lmb) {
             this.isSelected = true;
-            hoverUsed = true;
 
             if (Date.now() - this.lastClicked < 500) {
                 let newName = prompt("Input text:");
@@ -78,32 +112,40 @@ class Node {
             this.lastClicked = Date.now();
 
         }
-        if (!mouseIsPressed) {
+        if (!lmb) {
             this.isSelected = false;
         }
 
 
+        if (this.isHovered && rmb && !prmb) {
+            removalQueue.push(nodes.indexOf(this));
+            createParticleBurst(this.x,this.y,1,3,5,10,20,0.1,.5);
+
+        }
 
 
-        if (isHovered && !(mouseIsPressed && !this.isSelected)) {
+        if (this.isHovered && !(lmb && !this.isSelected)) {
+            targetSize += 0.5;
+
             if (this.isSelected) {
                 this.x += dx;
                 this.y += dy;
+                targetSize += 1.5;
             }
             fill(this.isSelected ? foregroundColor : backgroundColor);
             stroke(foregroundColor);
             strokeWeight(this.isSelected ? 0 : 3);
-            targetSize = 1.5;
             rect((this.x - 10) - this.width / 2, this.y - 25*this.size, this.width, 50*this.size, 15)
 
 
             fill(this.isSelected ? backgroundColor : foregroundColor);
 
-            hoverUsed = true;
         }
         noStroke();
 
-        text(this.name, (this.x) - this.width / 2, (this.y) + 15);
+        //this.input.position(((this.x) - this.width / 2)+width/2, ((this.y) + 15)+height/2);
+
+        text(this.name, (this.x) - this.width / 2, (this.y) + 15*this.size);
         
         
         this.size = lerp(this.size,targetSize,0.2);
@@ -115,13 +157,15 @@ class Node {
     applyForces(node) {
 
 
-        let cw = (node.width*node.widthMultiplier + this.width*this.widthMultiplier)+150;
-        let ch = (node.height*node.size + this.height*this.size)+50;
+        let cw = ((node.width + this.width)/this.size)*(this.size/2)+200;
+        let ch = (node.height + this.height)/2+150;
         let woh = (cw / ch);
 
 
         let nxv = -(this.x - node.x);
         let nyv = -(this.y - node.y)*woh;
+        
+        nyv += 40*Math.sign(nyv);
 
         let l = Math.sqrt(nxv * nxv + nyv * nyv);
 
@@ -135,11 +179,13 @@ class Node {
 
         l -=  cw;
 
-        l *= lerp(node.width/this.width,1,0.7);
+        l *= node.size/this.size + node.size;
 
-        l *= (node.size/this.size);
+        //l *= lerp(node.size/this.size,1,0.7);
 
         l = Math.min(l,0);
+
+        l*= 2;
 
         nxv *= l;
         nyv *= l;

@@ -12,9 +12,15 @@ let mx, my, pmx, pmy;
 
 let dx, dy;
 
-let mouseWasPressed;
+let lmb, plmb = false;
+
+let rmb, prmb = false;
+
+let mmb, pmmb = false;
 
 let hoverUsed;
+
+let removalQueue = new Array();
 
 function getWidth() {
     return bgdiv.clientWidth;
@@ -86,7 +92,32 @@ function draw() {
     
     hoverUsed = false;
 
+    lmb = false;
+    rmb = false; 
+    mmb = false;
+
+    if (mouseIsPressed) {
+        switch (mouseButton) {
+            case LEFT:
+                lmb = true;
+                break;
+            case RIGHT:
+                rmb = true;
+                break;
+            case CENTER:
+                mmb = true;
+                break;
+        }
+    }
+
     let selection = false;
+
+    removalQueue = new Array();
+    
+    
+
+    drawParticles();
+
     nodes.forEach((n) => {
         nodes.forEach((nf) => {
             if (nf != n) n.applyForces(nf);
@@ -94,10 +125,31 @@ function draw() {
         let nd = n.drawSelf();
         selection = selection || nd;
     });
-    if (!selection && mouseIsPressed) nodes.push(new Node(mx,my,words[Math.floor(Math.random()*words.length)]));
 
-    mouseWasPressed = mouseIsPressed;
+    removalQueue.forEach((i) => {
+        nodes.splice(i,1);
+    });
+
+    if (!selection && lmb && !plmb) {
+        nodes.push(new Node(mx,my,words[Math.floor(Math.random()*words.length)]));
+        createParticleBurst(mx,my,1,5,5,10,10,0.5,1);
+    }
+
+    plmb = lmb;
+    prmb = rmb;
+    pmmb = mmb;
+
+
 }
 
+function keyPressed() {
+    nodes.forEach(n)
+}
+
+function mouseWheel(event) {
+    nodes.forEach((n) => {
+        n.processMouse(event.delta);
+    });
+}
 
 
