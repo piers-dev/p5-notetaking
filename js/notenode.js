@@ -218,7 +218,7 @@ class Node {
                 if (this.isSelected) {
                     this.x += dx;
                     this.y += dy;
-                    targetSize *= 1.3;
+                    targetSize *= this.mode ? 1.1 : 1.3;
                 }
                 fill(this.isSelected ? color : backgroundColor);
                 stroke(color);
@@ -234,7 +234,7 @@ class Node {
             
 
 
-            strokeWeight(this.isSelected ? 0 : 3 * this.size);
+            strokeWeight(this.isSelected ? 0 : 6);
             stroke(backgroundColor);
             fill(this.isSelected ? backgroundColor : color);
 
@@ -247,8 +247,10 @@ class Node {
             text(this.name, ((this.x+width/2) - this.width / 2)+xPan, ((this.y+height/2) + 15 * this.size)+yPan);
 
             stroke(color);
+
+            strokeWeight(this.size*4);
             
-            if (strike) line(this.x-this.width/2+xPan+width/2,this.y+height/2+4,this.x+this.width/2+xPan+width/2-20,this.y+height/2+4);
+            if (strike) line(this.x-this.width/2+xPan+width/2,this.y+height/2+4*this.size+yPan,this.x+this.width/2+xPan+width/2-20,this.y+height/2+4*this.size+yPan);
         }
         
 
