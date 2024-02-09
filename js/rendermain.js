@@ -31,10 +31,43 @@ function getWidth() {
 function getHeight() {
     return bgdiv.clientHeight;
 }
-
+function loadFromFile() {
+    var file = document.getElementById("fileLoad").files[0];
+    if (file) {
+        var reader = new FileReader();
+        reader.readAsText(file, "UTF-8");
+        reader.onload = function (evt) {
+            try {
+                nodes = objToNodes(JSON.parse(evt.target.result));
+            }
+            catch {
+                alert("File is invalid or damaged")
+            }
+        }
+        reader.onerror = function (evt) {
+            alert("Failed to read file");
+        }
+    }
+}
 
 let saveButton;
-
+function download(data, filename, type) {
+    var file = new Blob([data], { type: type });
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+        window.navigator.msSaveOrOpenBlob(file, filename);
+    else { // Others
+        var a = document.createElement("a"),
+            url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }, 0);
+    }
+}
 
 // The statements in the setup() function
 // execute once when the program begins
@@ -69,6 +102,25 @@ function setup() {
         localStorage.setItem("nodes", JSON.stringify(nodesToObj(nodes)));
 
     }, 2500);
+
+
+    document.addEventListener('keydown', e => {
+        if (e.ctrlKey && e.key === 's') {
+            // Prevent the Save dialog to open
+            e.preventDefault();
+            // Place your code here
+            download(JSON.stringify(nodesToObj(nodes)), "Untitled.board", String);
+        }
+    });
+    document.addEventListener('keydown', e => {
+        if (e.ctrlKey && e.key === 'o') {
+            // Prevent the Save dialog to open
+            e.preventDefault();
+            // Place your code here
+            let fl = document.getElementById('fileLoad');
+            fl.click();
+        }
+    });
 
 }
 

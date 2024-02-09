@@ -112,7 +112,7 @@ class Node {
             
             this.width = textWidth(this.name) + 20;
 
-            this.height = 50;
+            this.height = 50*this.size/2;
 
             this.input.position((this.x+width/2)-this.width/2,(this.y+height/2)-this.height);
 
@@ -181,12 +181,12 @@ class Node {
 
 
             if (this.isHovered && !(lmb && !this.isSelected)) {
-                targetSize += 0.5;
+                targetSize *= 1.1;
 
                 if (this.isSelected) {
                     this.x += dx;
                     this.y += dy;
-                    targetSize += 1.5;
+                    targetSize *= 1.3;
                 }
                 fill(this.isSelected ? foregroundColor : backgroundColor);
                 stroke(foregroundColor);
@@ -207,7 +207,7 @@ class Node {
 
 
 
-        if (editingSelf) targetSize = 2;
+        if (editingSelf) targetSize = Math.min(this.sizeMultiplier,3.5);
 
         this.size = lerp(this.size, targetSize, 0.2);
 
