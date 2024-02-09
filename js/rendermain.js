@@ -1,6 +1,6 @@
 let y = 100;
 
-
+let r = document.querySelector(':root');
 let myCanvas;
 let bgdiv
 
@@ -155,6 +155,9 @@ function nodesToObj(array) {
 // sequence and after the last line is read, the first
 // line is executed again.
 function draw() {
+
+    r.style.setProperty('--foreground', foregroundColor);
+    r.style.setProperty('--background', backgroundColor);
 
 
     if (myCanvas.width != getWidth() || myCanvas.height != getHeight) {
