@@ -22,6 +22,8 @@ let hoverUsed;
 
 let removalQueue = new Array();
 
+let editing = -1;
+
 function getWidth() {
     return bgdiv.clientWidth;
 }
@@ -52,8 +54,9 @@ function setup() {
     
 
 
+    let s = localStorage.getItem("nodes");
 
-
+    if (s != null) nodes = objToNodes(JSON.parse(s));
 
 
     
@@ -62,12 +65,37 @@ function setup() {
 
 
 }
+
+
+function objToNodes(array) {
+    let n =  new Array()
+    array.forEach(e => {
+        let node = new Node(e['x'],e['y'],e['name']);
+        node.sizeMultiplier = e['size'];
+        n.push(node);
+        
+    });
+    return n;
+}
+
+function nodesToObj(array) {
+    let o = new Array()
+    array.forEach(e => {
+        o.push({'x': e.x,
+            'y': e.y,
+            'name': e.name,
+            'size': e.size
+
+        })
+    });
+    return o;
+}
+
 // The statements in draw() are executed until the
 // program is stopped. Each statement is executed in
 // sequence and after the last line is read, the first
 // line is executed again.
 function draw() {
-
     
 
     if (myCanvas.width != getWidth() || myCanvas.height != getHeight) {
@@ -131,7 +159,8 @@ function draw() {
     });
 
     if (!selection && lmb && !plmb) {
-        nodes.push(new Node(mx,my,words[Math.floor(Math.random()*words.length)]));
+        nodes.push(new Node(mx,my,"New Note"));
+        editing = nodes.length-1;
         createParticleBurst(mx,my,1,5,5,10,10,0.5,1);
     }
 
@@ -139,12 +168,10 @@ function draw() {
     prmb = rmb;
     pmmb = mmb;
 
-
+    console.log();
+    localStorage.setItem("nodes",JSON.stringify(nodesToObj(nodes)));
 }
 
-function keyPressed() {
-    nodes.forEach(n)
-}
 
 function mouseWheel(event) {
     nodes.forEach((n) => {
@@ -152,4 +179,9 @@ function mouseWheel(event) {
     });
 }
 
+function keyPressed() {
+    if (keyCode === ENTER || keyCode === ESCAPE) {
+        editing = -1;
+    }
+}
 

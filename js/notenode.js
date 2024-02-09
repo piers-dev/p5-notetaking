@@ -2,7 +2,10 @@ let backgroundColor = "#202029";
 let foregroundColor = "#e6176a";
 
 
-
+function checkBounds(x,y,lowx,highx,lowy,highy) {
+    return ((x < highx && x > lowx)
+        && (y < highy && y > lowy));
+}
 
 class Node {
 
@@ -16,7 +19,7 @@ class Node {
         this.width = textWidth(this.name) + 20;
         this.height = 50;
 
-    
+
 
         //this.input = createInput(name);
         //this.input.input(() => {
@@ -32,6 +35,9 @@ class Node {
         this.lastClicked = 0;
 
         this.isHovered = false;
+
+        this.input = null;
+
     }
 
     processKeyCode(keyCode) {
@@ -40,20 +46,27 @@ class Node {
 
     processMouse(delta) {
         if (this.isHovered) {
-            this.sizeMultiplier -= (delta*this.sizeMultiplier)/1000;
-            this.sizeMultiplier = Math.max(this.sizeMultiplier,0.5);
-            this.sizeMultiplier = Math.min(this.sizeMultiplier,5);
+            this.sizeMultiplier -= (delta * this.sizeMultiplier) / 1000;
+            this.sizeMultiplier = Math.max(this.sizeMultiplier, 0.5);
+            this.sizeMultiplier = Math.min(this.sizeMultiplier, 5);
         }
     }
 
+
+
+
     drawSelf() {
+        let editingSelf = editing == nodes.indexOf(this);
+
+        let editingOther = !editingSelf && (editing != -1)
 
 
+        let mouseOver = ((pmx < this.x - 10 + this.width / 2 && pmx > this.x - 10 - this.width / 2)
+        && (pmy < this.y + this.height / 2 && pmy > this.y - this.height / 2));
 
-        this.isHovered = (((pmx < this.x-10 + this.width / 2 && pmx > this.x - 10 - this.width / 2)
-        && (pmy < this.y + this.height / 2 && pmy > this.y - this.height / 2)) && !hoverUsed) || this.isSelected;
+        this.isHovered = ((mouseOver && !hoverUsed) || this.isSelected) && editing == -1;
 
-            
+
         if (this.isHovered) hoverUsed = true;
 
 
@@ -63,16 +76,58 @@ class Node {
 
 
 
-        textSize(40*this.size);
+        textSize(40 * this.size);
 
         this.width = textWidth(this.name) + 20;
-        this.height = 50*this.sizeMultiplier;
-
-        
+        this.height = 50 * this.sizeMultiplier;
 
 
-        this.xVel -= (this.x)*this.sizeMultiplier;
-        this.yVel -= (this.y)*this.sizeMultiplier;
+        if (editingSelf) {
+            if (this.input == null) {
+                this.input = createInput(this.name);
+                this.input.style('text-align','center');
+                this.input.style('font-family','Raleway');
+                this.input.style('stroke','none');
+                this.input.style('outline','none');
+                this.input.style('border-radius','15px');
+                this.input.style('border-style','solid');
+                this.input.style('border-color',foregroundColor);
+                this.input.style('background-color',backgroundColor);
+                this.input.style('color',foregroundColor);
+                this.input.style('border-width','6px');
+                this.input.elt.setSelectionRange(this.name.length-1,this.name.length-1);
+                this.input.attribute('maxlength', 20);
+            }
+
+            mouseOver = ((pmx < this.x - 10 + this.width && pmx > this.x - 10 - this.width)
+                && (pmy < this.y + this.height && pmy > this.y - this.height));
+            
+            if (mouseOver) targetSize += 0.5;
+            
+            this.name = this.input.value();
+
+
+
+            
+            this.width = textWidth(this.name) + 20;
+
+            this.height = 50;
+
+            this.input.position((this.x+width/2)-this.width/2,(this.y+height/2)-this.height);
+
+            this.input.size(this.width,this.height*2);
+            this.input.style('font-size',`${40*this.size}px`);
+            this.isSelected = mouseOver;
+
+
+        }
+        else if (this.input != null) {
+            this.input.remove();
+            this.input = null;
+        }
+
+        this.xVel -= (this.x) * this.sizeMultiplier;
+        this.yVel -= (this.y) * this.sizeMultiplier;
 
         //this.x = Math.min(Math.max(this.x,-width/2),width/2);
         //this.y = Math.min(Math.max(this.y,-height/2),height/2);
@@ -80,7 +135,7 @@ class Node {
         this.xVel = lerp(this.xVel, 0, 0.5);
         this.yVel = lerp(this.yVel, 0, 0.5);
 
-        if (this.isSelected) {
+        if (this.isSelected || editingSelf) {
             this.xVel = 0;
             this.yVel = 0;
 
@@ -89,66 +144,71 @@ class Node {
         this.x += this.xVel / 30;
         this.y += this.yVel / 30;
 
-        
-        if (Math.abs(this.xVel)+Math.abs(this.yVel) > 200) {
-            createParticleBurst(this.x,this.y,1,5,2,5,1,0.2,1);
+
+        if (Math.abs(this.xVel) + Math.abs(this.yVel) > 200) {
+            createParticleBurst(this.x, this.y, 1, 5, 2, 5, 1, 0.2, 1);
         }
 
 
 
         fill(foregroundColor);
 
+        if (!editingSelf) {
 
-        if (this.isHovered && !plmb && lmb) {
-            this.isSelected = true;
+            if (Date.now() - this.lastClicked < 200 && plmb && !lmb) {
+                editing = nodes.indexOf(this);
+                editingSelf = true;
+                return true;
 
-            if (Date.now() - this.lastClicked < 500) {
-                let newName = prompt("Input text:");
-                if (newName) this.name = newName;
+
+            }
+            if (this.isHovered && !plmb && lmb) {
+                this.isSelected = true;
+                this.lastClicked = Date.now();
+
+            }
+            if (!lmb) {
                 this.isSelected = false;
+            }
+
+
+            if ((this.isHovered && rmb && !prmb) || this.name == "") {
+                removalQueue.push(nodes.indexOf(this));
+                createParticleBurst(this.x, this.y, 1, 3, 5, 10, 20, 0.1, .5);
 
             }
 
-            this.lastClicked = Date.now();
 
-        }
-        if (!lmb) {
-            this.isSelected = false;
-        }
+            if (this.isHovered && !(lmb && !this.isSelected)) {
+                targetSize += 0.5;
+
+                if (this.isSelected) {
+                    this.x += dx;
+                    this.y += dy;
+                    targetSize += 1.5;
+                }
+                fill(this.isSelected ? foregroundColor : backgroundColor);
+                stroke(foregroundColor);
+                strokeWeight(this.isSelected ? 0 : 3);
+                rect((this.x - 10) - this.width / 2, this.y - 25 * this.size, this.width, 50 * this.size, 15)
 
 
-        if (this.isHovered && rmb && !prmb) {
-            removalQueue.push(nodes.indexOf(this));
-            createParticleBurst(this.x,this.y,1,3,5,10,20,0.1,.5);
+                fill(this.isSelected ? backgroundColor : foregroundColor);
 
-        }
-
-
-        if (this.isHovered && !(lmb && !this.isSelected)) {
-            targetSize += 0.5;
-
-            if (this.isSelected) {
-                this.x += dx;
-                this.y += dy;
-                targetSize += 1.5;
             }
-            fill(this.isSelected ? foregroundColor : backgroundColor);
-            stroke(foregroundColor);
-            strokeWeight(this.isSelected ? 0 : 3);
-            rect((this.x - 10) - this.width / 2, this.y - 25*this.size, this.width, 50*this.size, 15)
+            noStroke();
 
+            //this.input.position(((this.x) - this.width / 2)+width/2, ((this.y) + 15)+height/2);
 
-            fill(this.isSelected ? backgroundColor : foregroundColor);
-
+            text(this.name, (this.x) - this.width / 2, (this.y) + 15 * this.size);
         }
-        noStroke();
-
-        //this.input.position(((this.x) - this.width / 2)+width/2, ((this.y) + 15)+height/2);
-
-        text(this.name, (this.x) - this.width / 2, (this.y) + 15*this.size);
         
-        
-        this.size = lerp(this.size,targetSize,0.2);
+
+
+
+        if (editingSelf) targetSize = 2;
+
+        this.size = lerp(this.size, targetSize, 0.2);
 
         return this.isSelected;
     }
@@ -157,15 +217,15 @@ class Node {
     applyForces(node) {
 
 
-        let cw = ((node.width + this.width)/this.size)*(this.size/2)+200;
-        let ch = (node.height + this.height)/2+150;
+        let cw = ((node.width + this.width) / this.size) * (this.size / 2) + 200;
+        let ch = (node.height + this.height) / 2 + 150;
         let woh = (cw / ch);
 
 
         let nxv = -(this.x - node.x);
-        let nyv = -(this.y - node.y)*woh;
-        
-        nyv += 40*Math.sign(nyv);
+        let nyv = -(this.y - node.y) * woh;
+
+        nyv += 40 * Math.sign(nyv);
 
         let l = Math.sqrt(nxv * nxv + nyv * nyv);
 
@@ -173,19 +233,19 @@ class Node {
         nxv /= l;
 
         nyv /= l;
-        
 
 
 
-        l -=  cw;
 
-        l *= node.size/this.size + node.size;
+        l -= cw;
+
+        l *= node.size / this.size + node.size;
 
         //l *= lerp(node.size/this.size,1,0.7);
 
-        l = Math.min(l,0);
+        l = Math.min(l, 0);
 
-        l*= 2;
+        l *= 2;
 
         nxv *= l;
         nyv *= l;
