@@ -1,6 +1,7 @@
 :root {
     --foreground: "#e6176a";
     --background: "#202029";
+    --special: "#2bc7ff";
   }
 
 #canvas {
@@ -37,19 +38,23 @@ html, body {
     
 }
 
-#bg,#fg {
-    position: absolute;
-    border: none;
-    border-color: transparent;
-    outline: none;
-    stroke:none;
-    width: 50px;
-    height: 50px;
-    padding: 0;
-    margin: 0;
-    outline-color: transparent;
+#bg,#fg,#sg {
+    display: none;
 
 }
-#fg {
-    left: 50px;
+
+#overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    
+    
+}
+
+.colorSelect {
+    width: 50px;
+    height: 50px;
+    border: none;
+    box-shadow: 0px 5px 0px var(--foreground);
+    
 }

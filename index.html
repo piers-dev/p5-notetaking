@@ -1,22 +1,32 @@
 <!DOCTYPE html>
 <html>
-    <head>
+
+<head>
     <script src="js/p5/p5.js"></script>
     <link rel="stylesheet" href="css/style.css" />
 
-    </head>
-    <body>
-        <input type="file" style="display: none;" id="fileLoad" accept=".board" onchange="loadFromFile()" />
-        <input type="color" id="bg" onchange="updateBG()">
-        <input type="color" id="fg" onchange="updateFG()">
+</head>
 
-        <div id="canvas" oncontextmenu="return false;"></div>
-        <script src="js/words.js"></script>
-        <script src="js/particle.js"></script>
+<body oncontextmenu="return false;">
+    <input type="file" style="display: none;" id="fileLoad" accept=".board" onchange="loadFromFile()" />
+    <input type="color" id="bg" onchange="updateBG()">
+    <input type="color" id="fg" onchange="updateFG()">
+    <input type="color" id="sg" onchange="updateSG()">
+    <div id="overlay">
+        <button class="colorSelect" onclick="document.getElementById('bg').click()" style="background-color: var(--background);">
+        <button class="colorSelect" onclick="document.getElementById('fg').click()" style="background-color: var(--foreground);">
+        <button class="colorSelect" onclick="document.getElementById('sg').click()" style="background-color: var(--special); border-bottom-right-radius: 50%;">
+    </div>
 
-        <script src="js/notenode.js"></script>
 
 
-        <script src="js/rendermain.js"></script>
-    </body>
+    <div id="canvas" ></div>
+
+
+    <script src="js/notenode.js"></script>
+
+
+    <script src="js/rendermain.js"></script>
+</body>
+
 </html>

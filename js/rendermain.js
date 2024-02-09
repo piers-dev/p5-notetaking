@@ -28,8 +28,19 @@ let editing = -1;
 
 let xPan = 0;
 let yPan = 0;
-let xPanVel = 0; 
+let xPanVel = 0;
 let yPanVel = 0;
+
+let zoom = 1;
+
+let zoomDelta = 0;
+
+let bgp = document.getElementById('bg');
+
+let fgp = document.getElementById('fg');
+
+let sgp = document.getElementById('sg');
+
 
 function getWidth() {
     return bgdiv.clientWidth;
@@ -77,14 +88,16 @@ function download(data, filename, type) {
 }
 
 function updateBG() {
-    backgroundColor = document.getElementById('bg').value;
-    localStorage.setItem('bgColor',backgroundColor);
+    localStorage.setItem('bgColor', backgroundColor);
 
 }
 
 function updateFG() {
-    foregroundColor = document.getElementById('fg').value;
-    localStorage.setItem('fgColor',foregroundColor);
+    localStorage.setItem('fgColor', foregroundColor);
+}
+
+function updateSG() {
+    localStorage.setItem('sgColor', specialColor);
 }
 
 
@@ -97,10 +110,10 @@ function setup() {
 
     myCanvas.parent("canvas");
 
-    
+
 
     stroke(255); // Set line drawing color to white
-    //frameRate(30);
+    frameRate(120);
     //nodes.push(new Node(0,0,"Test"));
     //nodes.push(new Node(200,0,"Other Test"));
     //nodes.push(new Node(200,500,"Test 3"));
@@ -109,18 +122,23 @@ function setup() {
     //nodes.push(new Node(-302,0,"I like tests"));
 
 
-    
+
 
 
 
     let bg = localStorage.getItem('bgColor');
     let fg = localStorage.getItem('fgColor');
+    let sg = localStorage.getItem('sgColor');
 
     if (bg != null) backgroundColor = bg;
     if (fg != null) foregroundColor = fg;
+    if (sg != null) specialColor = sg;
+
 
     document.getElementById('fg').value = foregroundColor;
     document.getElementById('bg').value = backgroundColor;
+    document.getElementById('sg').value = specialColor;
+
 
     let s = localStorage.getItem("nodes");
 
@@ -165,6 +183,8 @@ function objToNodes(array) {
     array.forEach(e => {
         let node = new Node(e['x'], e['y'], e['name']);
         node.sizeMultiplier = e['size'];
+        node.size = node.sizeMultiplier;
+        node.mode = e['mode'];
         n.push(node);
 
     });
@@ -178,7 +198,8 @@ function nodesToObj(array) {
             'x': e.x,
             'y': e.y,
             'name': e.name,
-            'size': e.size
+            'size': e.size,
+            'mode': e.mode
 
         })
     });
@@ -191,8 +212,16 @@ function nodesToObj(array) {
 // line is executed again.
 function draw() {
 
+
+    backgroundColor = bgp.value;
+
+    foregroundColor = fgp.value;
+    specialColor = sgp.value;
+
     r.style.setProperty('--foreground', foregroundColor);
     r.style.setProperty('--background', backgroundColor);
+    r.style.setProperty('--special', specialColor);
+
 
 
     if (myCanvas.width != getWidth() || myCanvas.height != getHeight) {
@@ -210,11 +239,33 @@ function draw() {
     dx = mouseX - pmouseX;
     dy = mouseY - pmouseY;
 
-    
+
 
     background(backgroundColor); // Set the background to black
     fill(backgroundColor);
     noStroke();
+
+
+    if (!hoverUsed && mmb) {
+
+        xPanVel = dx;
+        yPanVel = dy;
+        //createParticleBurst(Math.random() * width - width / 2 - xPan, Math.random() * height - height / 2 - yPan, 0.1, 0.3, 2, 5, Math.random() * 3, 1, 2);
+
+        //this.sizeMultiplier -= (delta * this.sizeMultiplier) / 1000;
+        //this.sizeMultiplier = Math.max(this.sizeMultiplier, 0.5);
+        //this.sizeMultiplier = Math.min(this.sizeMultiplier, 5);
+
+    }
+    else {
+        xPanVel = lerp(xPanVel, 0, 0.1);
+        yPanVel = lerp(yPanVel, 0, 0.1);
+
+    }
+
+    xPan += xPanVel;
+    yPan += yPanVel;
+
 
     hoverUsed = false;
 
@@ -240,11 +291,16 @@ function draw() {
 
     removalQueue = new Array();
 
-    //createParticleBurst(Math.random()*width-width/2-xPan,Math.random()*height-height/2-yPan,0.1,0.3,1,3,Math.random()*3,1,15);
 
-    drawParticles();
-
+    //drawParticles();
+    fill("#00000000")
     nodes.forEach((n) => {
+        if (!n.mode) return;
+        let nd = n.drawSelf();
+        selection = selection || nd;
+    });
+    nodes.forEach((n) => {
+        if (n.mode) return;
         nodes.forEach((nf) => {
             if (nf != n) n.applyForces(nf);
         });
@@ -253,32 +309,22 @@ function draw() {
     });
 
 
-    if (!selection && (lmb && !plmb) || (rmb && !prmb) ) {
+
+    if (!hoverUsed && !selection && (lmb && !plmb) || (rmb && !prmb)) {
 
         if (editing != -1) {
             editing = -1;
         }
     }
 
-    if (!selection && !hoverUsed && mmb) {
-        xPanVel = lerp(xPanVel,dx,1);
-        yPanVel = lerp(yPanVel,dy,1);
-    }
-    else{
-        xPanVel = lerp(xPanVel,0,0.1);
-        yPanVel = lerp(yPanVel,0,0.1);
 
-    }
-
-    xPan += xPanVel;
-    yPan += yPanVel;
 
 
     removalQueue.forEach((i) => {
         nodes.splice(i, 1);
     });
 
-  
+
 
     plmb = lmb;
     prmb = rmb;
@@ -289,9 +335,13 @@ function draw() {
 
 
 function mouseWheel(event) {
+    let eventUsed = false;
     nodes.forEach((n) => {
-        n.processMouse(event.delta);
+        let nh = n.processMouse(event.delta);
+        eventUsed = eventUsed || nh;
     });
+
+    if (!eventUsed) zoom += event.delta;
 }
 
 function keyPressed() {
@@ -302,8 +352,8 @@ function keyPressed() {
 
 function doubleClicked(event) {
     if (editing != -1) return;
-    nodes.push(new Node(mx-xPan, my-yPan, "New Note"));
+    nodes.push(new Node(mx - xPan, my - yPan, "New Note"));
     editing = nodes.length - 1;
-    createParticleBurst(mx-xPan, my-yPan, 1, 5, 5, 10, 10, 0.5, 1);
+    //createParticleBurst(mx - xPan, my - yPan, 1, 5, 5, 10, 10, 0.5, 1);
 }
 
