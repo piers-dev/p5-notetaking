@@ -216,19 +216,25 @@ function draw() {
         selection = selection || nd;
     });
 
-    removalQueue.forEach((i) => {
-        nodes.splice(i, 1);
-    });
 
-    if (!selection && lmb && !plmb) {
+    if (!selection && (lmb && !plmb) || (rmb && !prmb) ) {
 
-        if (editing != -1) editing = -1;
-        else {
+        if (editing != -1) {
+            editing = -1;
+        }
+        else if (lmb && !plmb) {
             nodes.push(new Node(mx, my, "New Note"));
             editing = nodes.length - 1;
             createParticleBurst(mx, my, 1, 5, 5, 10, 10, 0.5, 1);
         }
     }
+
+
+    removalQueue.forEach((i) => {
+        nodes.splice(i, 1);
+    });
+
+  
 
     plmb = lmb;
     prmb = rmb;

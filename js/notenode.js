@@ -173,7 +173,7 @@ class Node {
             }
 
 
-            if ((this.isHovered && rmb && !prmb) || this.name == "") {
+            if ((this.isHovered && rmb && !prmb) || this.name == "" || this.name == "New Note") {
                 removalQueue.push(nodes.indexOf(this));
                 createParticleBurst(this.x, this.y, 1, 3, 5, 10, 20, 0.1, .5);
 
