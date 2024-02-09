@@ -453,12 +453,13 @@ function mouseWheel(event) {
         let dxp = (zoom * width / 2) - width / 2;
         let dyp = (zoom * height / 2) - height / 2;
 
+        
         let newPan = radiusClamp(xPan, yPan, 2450 * zoom, -dxp, -dyp);
 
 
 
         xPan = newPan['x'];
-        yPan = newPan['y'];
+        yPan = newPan['y']; 
 
     }
 }
