@@ -191,7 +191,7 @@ class Node {
                 fill(this.isSelected ? foregroundColor : backgroundColor);
                 stroke(foregroundColor);
                 strokeWeight(this.isSelected ? 0 : 3);
-                rect((this.x - 10) - this.width / 2, this.y - 25 * this.size, this.width, 50 * this.size, 15)
+                rect(((this.x+width/2) - 10) - this.width / 2, (this.y+height/2) - 25 * this.size, this.width, 50 * this.size, 15)
 
 
                 fill(this.isSelected ? backgroundColor : foregroundColor);
@@ -201,7 +201,7 @@ class Node {
 
             //this.input.position(((this.x) - this.width / 2)+width/2, ((this.y) + 15)+height/2);
 
-            text(this.name, (this.x) - this.width / 2, (this.y) + 15 * this.size);
+            text(this.name, (this.x+width/2) - this.width / 2, (this.y+height/2) + 15 * this.size);
         }
         
 

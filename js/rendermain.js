@@ -86,7 +86,7 @@ function updateFG() {
 function setup() {
 
     bgdiv = document.getElementById("canvas")
-    myCanvas = createCanvas(getWidth(), getHeight(), WEBGL);
+    myCanvas = createCanvas(getWidth(), getHeight());
 
     myCanvas.parent("canvas");
 
