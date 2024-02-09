@@ -85,16 +85,17 @@ class Node {
         if (editingSelf) {
             if (this.input == null) {
                 this.input = createInput(this.name);
-                this.input.style('text-align','center');
-                this.input.style('font-family','Raleway');
-                this.input.style('stroke','none');
-                this.input.style('outline','none');
-                this.input.style('border-radius','15px');
-                this.input.style('border-style','solid');
+                this.input.class('ui')
+                //this.input.style('text-align','center');
+                //this.input.style('font-family','Raleway');
+                //this.input.style('stroke','none');
+                //this.input.style('outline','none');
+                //this.input.style('border-radius','15px');
+                //this.input.style('border-style','solid');
                 this.input.style('border-color',foregroundColor);
                 this.input.style('background-color',backgroundColor);
                 this.input.style('color',foregroundColor);
-                this.input.style('border-width','6px');
+                //this.input.style('border-width','6px');
                 this.input.elt.setSelectionRange(this.name.length-1,this.name.length-1);
                 this.input.attribute('maxlength', 20);
             }
@@ -132,8 +133,8 @@ class Node {
         //this.x = Math.min(Math.max(this.x,-width/2),width/2);
         //this.y = Math.min(Math.max(this.y,-height/2),height/2);
 
-        this.xVel = lerp(this.xVel, 0, 0.5);
-        this.yVel = lerp(this.yVel, 0, 0.5);
+        this.xVel = lerp(this.xVel, 0, 0.65);
+        this.yVel = lerp(this.yVel, 0, 0.65);
 
         if (this.isSelected || editingSelf) {
             this.xVel = 0;

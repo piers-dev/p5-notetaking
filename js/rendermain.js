@@ -33,6 +33,8 @@ function getHeight() {
 }
 
 
+let saveButton;
+
 
 // The statements in the setup() function
 // execute once when the program begins
@@ -51,7 +53,7 @@ function setup() {
     //nodes.push(new Node(-300,0,"Another test surprise surprise"));
     //nodes.push(new Node(-301,0,"Another one"));
     //nodes.push(new Node(-302,0,"I like tests"));
-    
+
 
 
     let s = localStorage.getItem("nodes");
@@ -59,21 +61,25 @@ function setup() {
     if (s != null) nodes = objToNodes(JSON.parse(s));
 
 
-    
+
     font = loadFont("fonts/Raleway-Regular.ttf");
     textFont(font);
 
+    setInterval(() => {
+        localStorage.setItem("nodes", JSON.stringify(nodesToObj(nodes)));
+
+    }, 2500);
 
 }
 
 
 function objToNodes(array) {
-    let n =  new Array()
+    let n = new Array()
     array.forEach(e => {
-        let node = new Node(e['x'],e['y'],e['name']);
+        let node = new Node(e['x'], e['y'], e['name']);
         node.sizeMultiplier = e['size'];
         n.push(node);
-        
+
     });
     return n;
 }
@@ -81,7 +87,8 @@ function objToNodes(array) {
 function nodesToObj(array) {
     let o = new Array()
     array.forEach(e => {
-        o.push({'x': e.x,
+        o.push({
+            'x': e.x,
             'y': e.y,
             'name': e.name,
             'size': e.size
@@ -96,19 +103,19 @@ function nodesToObj(array) {
 // sequence and after the last line is read, the first
 // line is executed again.
 function draw() {
-    
+
 
     if (myCanvas.width != getWidth() || myCanvas.height != getHeight) {
         myCanvas.resize(getWidth(), getHeight());
     }
 
 
-    mx = mouseX-width/2;
-    my = mouseY-height/2;
+    mx = mouseX - width / 2;
+    my = mouseY - height / 2;
 
-    pmx = pmouseX-width/2;
-    pmy = pmouseY-height/2;
-    
+    pmx = pmouseX - width / 2;
+    pmy = pmouseY - height / 2;
+
 
     dx = mouseX - pmouseX;
     dy = mouseY - pmouseY;
@@ -117,11 +124,11 @@ function draw() {
     background(backgroundColor); // Set the background to black
     fill(backgroundColor);
     noStroke();
-    
+
     hoverUsed = false;
 
     lmb = false;
-    rmb = false; 
+    rmb = false;
     mmb = false;
 
     if (mouseIsPressed) {
@@ -141,8 +148,8 @@ function draw() {
     let selection = false;
 
     removalQueue = new Array();
-    
-    
+
+
 
     drawParticles();
 
@@ -155,21 +162,24 @@ function draw() {
     });
 
     removalQueue.forEach((i) => {
-        nodes.splice(i,1);
+        nodes.splice(i, 1);
     });
 
     if (!selection && lmb && !plmb) {
-        nodes.push(new Node(mx,my,"New Note"));
-        editing = nodes.length-1;
-        createParticleBurst(mx,my,1,5,5,10,10,0.5,1);
+
+        if (editing != -1) editing = -1;
+        else {
+            nodes.push(new Node(mx, my, "New Note"));
+            editing = nodes.length - 1;
+            createParticleBurst(mx, my, 1, 5, 5, 10, 10, 0.5, 1);
+        }
     }
 
     plmb = lmb;
     prmb = rmb;
     pmmb = mmb;
 
-    console.log();
-    localStorage.setItem("nodes",JSON.stringify(nodesToObj(nodes)));
+
 }
 
 

@@ -1,4 +1,10 @@
+:root {
+    --foreground: "#e6176a";
+    --background: "#202029";
+  }
+
 #canvas {
+
     width: 100vw;
     height: 100vh;
 }
@@ -7,4 +13,24 @@ html, body {
     padding: 0;
     margin: 0;
     overflow: hidden;
+}
+
+.ui {
+    text-align: center;
+    font-family: 'Raleway';
+    stroke: none;
+    
+    outline: none;
+
+    border-radius: 15px;
+
+    border-style: solid;
+
+    border-color: var(--foreground);
+
+    color: var(--foreground);
+
+    border-width: 6px;
+
+    
 }
