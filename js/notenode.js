@@ -233,7 +233,7 @@ class Node {
             if (this.isHovered && rmb) {
                 targetSize *= 0.7;
             }
-            if ((this.isHovered && !rmb && prmb) || this.name == "" || this.name == "New Note") {
+            if ((this.isHovered && !rmb && prmb) || this.name == "") {
                 removalQueue.push(nodes.indexOf(this));
                 //createParticleBurst(this.x, this.y, 1, 3, 5, 10, 20, 0.1, .5);
 
@@ -294,6 +294,7 @@ class Node {
         return this.isSelected;
     }
 
+    
 
     applyForces(node) {
 

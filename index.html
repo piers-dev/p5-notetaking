@@ -20,29 +20,32 @@
     <input type="color" id="fg" onchange="updateFG()">
     <input type="color" id="sg" onchange="updateSG()">
     <div id="overlay">
-        
-            <sl-tooltip content="Outside Colour" placement="bottom">
-                <button class="uiComponent" onclick="document.getElementById('og').click()"
-                    style="background-color: var(--outground);"></button>
+        <div>
+            <sl-tooltip content="Outside Colour" placement="right">
+                <button class="colorSelect" onclick="document.getElementById('og').click()"
+                    style="background-color: var(--outground);border-radius: 15px 15px 0px 0px;"></button>
             </sl-tooltip>
-        
-            <sl-tooltip content="Background Colour" placement="bottom">
-                <button class="uiComponent" onclick="document.getElementById('bg').click()"
-                    style="background-color: var(--background);"></button>
+        </div>
+        <div>
+            <sl-tooltip content="Background Colour" placement="right">
+                <button class="colorSelect" onclick="document.getElementById('bg').click()"
+                    style="background-color: var(--background);border-radius: 0;"></button>
             </sl-tooltip>
-        
-            <sl-tooltip content="Foreground Colour" placement="bottom">
-                <button class="uiComponent" onclick="document.getElementById('fg').click()"
-                    style="background-color: var(--foreground);"></button>
+        </div>
+        <div>
+            <sl-tooltip content="Foreground Colour" placement="right">
+                <button class="colorSelect" onclick="document.getElementById('fg').click()"
+                    style="background-color: var(--foreground); border-radius: 0;"></button>
             </sl-tooltip>
-        
-            <sl-tooltip content="Special Colour" placement="bottom">
-                <button class="uiComponent" onclick="document.getElementById('sg').click()"
-                    style="background-color: var(--special);"></button>
+        </div>
+        <div>
+            <sl-tooltip content="Special Colour" placement="right">
+                <button class="colorSelect" onclick="document.getElementById('sg').click()"
+                    style="background-color: var(--special);border-radius: 0px 0px 15px 15px;"></button>
             </sl-tooltip>
-        
+        </div>
 
-        <sl-icon name="palette" style="color: var(--foreground); width: 40px; height: 40px;"></sl-icon>
+        <sl-icon name="palette" style="color: var(--foreground); width: 40px; height: 40px; padding: 10px 5px;"></sl-icon>
 
 
 
@@ -69,7 +72,7 @@
 
 
                 </div>
-                <button class="uiComponent" width="50px" height="50px">
+                <button class="uiComponent">
                     <sl-icon name="question-circle"
                         style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
 
@@ -78,7 +81,7 @@
 
             </sl-tooltip>
             <sl-tooltip content="Save To File">
-                <button class="uiComponent" width="50px" height="50px" onclick="filesave()">
+                <button class="uiComponent" onclick="filesave()">
                     <sl-icon name="floppy" style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
 
                 </button>
@@ -86,13 +89,34 @@
 
             </sl-tooltip>
             <sl-tooltip content="Open From File">
-                <button class="uiComponent" width="50px" height="50px" onclick="openfile()">
+                <button class="uiComponent" onclick="openfile()">
                     <sl-icon name="folder2-open" style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
 
                 </button>
 
 
             </sl-tooltip>
+        </div>
+    </div>
+    <div id="canvasBar">
+        <div>
+            <sl-tooltip content="Add Organiser">
+                <button class="uiComponentBig" onclick="addNote(true)" style="border-color: var(--special); box-shadow: 0px 5px var(--special); size: 80px;">
+                    <sl-icon name="folder-plus" style="color: var(--special); width: 40px; height: 40px;"></sl-icon>
+
+                </button>
+
+
+            </sl-tooltip>
+            <sl-tooltip content="Add Note">
+                <button class="uiComponentBig" onclick="addNote()">
+                    <sl-icon name="plus-circle" style="color: var(--foreground); width: 40px; height: 40px;"></sl-icon>
+
+                </button>
+
+
+            </sl-tooltip>
+            
         </div>
     </div>
 

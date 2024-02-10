@@ -69,13 +69,16 @@ html, body {
     height: 50px;
     border: solid;
     border-color: var(--foreground);
-    border-width: 1px;
-    box-shadow: 5px 0px 0px var(--foreground);
-    padding: 0;
-    margin: 0;
+    background-color: var(--background);
+    border-width: 2px;
+    box-shadow: 0px 5px 0px var(--foreground);
     
+    transition: width 0.05s ease-out 0.05s;
+
     
-    
+}
+.colorSelect:hover {
+    width: 60px;
 }
 
 
@@ -94,13 +97,35 @@ html, body {
     border-width: 4px;
 }
 
+.uiComponentBig  {
+    width: 80px;
+    height: 80px;
+    border: solid;
+    border-color: var(--foreground);
+    background-color: var(--background);
+    border-width: 2px;
+    border-radius: 20px;
+    box-shadow: 0px 5px 0px var(--foreground);
+    margin: 3px;
+}
+
+.uiComponentBig:hover {
+    border-width: 4px;
+}
+
 
 #menuBar {
     position: absolute;
     left: 3px;
     bottom: 3px;
     height: 58px;
-    width: 100%;
+}
+#canvasBar {
+    position: absolute;
+    right: 3px;
+    bottom: 8px;
+    height: 88px;
+    
 }
 
 h1 {

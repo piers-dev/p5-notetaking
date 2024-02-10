@@ -456,6 +456,17 @@ function draw() {
 
 }
 
+function addNote(organiser = false) {
+    let x = (((width/2) / zoom) - width / 2) - xPan / zoom;
+    let y = (((height/2) / zoom) - height / 2) - yPan / zoom;
+
+    nodes.push(new Node(x, y, organiser ? "New Organiser" : "New Note"));
+    editing = nodes.length - 1;
+
+    nodes[nodes.length-1].mode = organiser;
+
+}
+
 
 function mouseWheel(event) {
     let eventUsed = false;
@@ -499,7 +510,7 @@ function keyPressed() {
 function doubleClicked(event) {
     if (editing != -1) return;
     if (mouseY > height - 50) return;
-    nodes.push(new Node(mx - xPan / zoom, my - yPan / zoom, "New Note"));
+    nodes.push(new Node(mx - xPan / zoom, my - yPan / zoom, ""));
     editing = nodes.length - 1;
     //createParticleBurst(mx - xPan, my - yPan, 1, 5, 5, 10, 10, 0.5, 1);
 }
