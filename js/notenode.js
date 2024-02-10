@@ -1,4 +1,4 @@
-let backgroundColor = "#202029";
+let backgroundColor = "#08081b";
 let outgroundColor = "#0e0d11";
 
 let foregroundColor = "#ffffff";
