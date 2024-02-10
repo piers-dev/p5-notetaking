@@ -16,7 +16,10 @@
         src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.13.1/cdn/shoelace-autoloader.js"></script>
     <link rel="stylesheet" href="css/style.css" />
 
+    <?php
+    echo "Hello"
 
+    ?>
 
 </head>
 
@@ -113,14 +116,7 @@
 
 
             </sl-tooltip>
-            <sl-tooltip content="Share Link">
-                <button class="uiComponent" onclick="copylink()">
-                    <sl-icon name="share" style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
-
-                </button>
-
-
-            </sl-tooltip>
+            
             <span style="margin: 0px 10px;"></span>
             <sl-tooltip content="Undo">
                 <button class="uiComponent" onclick="undo()" id="undoButton">
