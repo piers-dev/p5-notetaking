@@ -10,7 +10,7 @@
         <meta name="keywords" content="Notetaking, Notes, Organisation">
         <meta name="viewport" content="width=device-width, height=device-height">
     </head>
-    <script src="js/p5/p5.js"></script>
+    <script src="js/p5/p5.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.13.1/cdn/themes/light.css" />
     <script type="module"
         src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.13.1/cdn/shoelace-autoloader.js"></script>
@@ -108,6 +108,23 @@
 
 
             </sl-tooltip>
+            <span style="margin: 0px 10px;"></span>
+            <sl-tooltip content="Undo">
+                <button class="uiComponent" onclick="undo()" id="undoButton">
+                    <sl-icon name="arrow-90deg-left" style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
+
+                </button>
+
+
+            </sl-tooltip>
+            <sl-tooltip content="Redo">
+                <button class="uiComponent" onclick="redo()" id="redoButton">
+                    <sl-icon name="arrow-90deg-right" style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
+
+                </button>
+
+
+            </sl-tooltip>
         </div>
     </div>
     <div id="canvasBar">
@@ -121,6 +138,7 @@
 
 
             </sl-tooltip>
+            
             <sl-tooltip content="Add Note">
                 <button class="uiComponentBig" onclick="addNote()">
                     <sl-icon name="plus-circle" style="color: var(--foreground); width: 40px; height: 40px;"></sl-icon>

@@ -102,6 +102,8 @@ class Node {
 
         if (editingSelf) {
             if (this.input == null) {
+                //stepUndo();
+
                 this.input = createInput(this.name);
                 this.input.class('ui')
                 //this.input.style('text-align','center');
@@ -145,10 +147,13 @@ class Node {
             this.isSelected = mouseOver;
 
 
+
         }
         else if (this.input != null) {
             this.input.remove();
+            
             this.input = null;
+
         }
 
         //this.xVel -= (this.x) * this.sizeMultiplier;
@@ -223,6 +228,7 @@ class Node {
 
 
                 editing = nodes.indexOf(this);
+
                 editingSelf = true;
                 return true;
 
@@ -231,6 +237,7 @@ class Node {
             if (this.isHovered && !plmb && lmb) {
                 this.isSelected = true;
                 this.lastClicked = Date.now();
+                stepUndo();
 
             }
             if (!lmb) {
@@ -240,6 +247,8 @@ class Node {
             if (this.isHovered && pmmb) {
                 targetSize *= 0.9;
                 if (!mmb) {
+                    stepUndo();
+
                     this.mode = !this.mode;
                     this.size *= 0.9;
                 }

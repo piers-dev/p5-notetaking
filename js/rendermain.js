@@ -6,6 +6,10 @@ let bgdiv
 
 let nodes = new Array()
 
+let undoBuffer = null;
+let redoBuffer = null;
+
+
 let font;
 
 let mx, my, pmx, pmy;
@@ -21,6 +25,8 @@ let mmb, pmmb = false;
 let hoverUsed;
 
 let removalQueue = new Array();
+
+
 
 let editing = -1;
 
@@ -43,6 +49,10 @@ let ogp = document.getElementById('og');
 let fgp = document.getElementById('fg');
 
 let sgp = document.getElementById('sg');
+
+let undoButton = document.getElementById('undoButton');
+let redoButton = document.getElementById('redoButton');
+
 
 
 function getWidth() {
@@ -69,6 +79,53 @@ function loadFromFile() {
             alert("Failed to read file");
         }
     }
+}
+
+function stepUndo() {
+    undoBuffer = copyNodes(nodes);
+    redoBuffer = null;
+}
+
+function undo() {
+    editing = -1;
+    draw();
+    if (undoBuffer != null) {
+        redoBuffer = copyNodes(nodes);
+
+        nodes = undoBuffer.concat();
+
+        undoBuffer = null;
+    }
+}
+
+function redo() {
+    editing = -1;
+    draw();
+    if (redoBuffer != null) {
+        undoBuffer = copyNodes(nodes);
+
+        nodes = redoBuffer.concat();
+
+        redoBuffer = null;
+    }
+
+}
+
+function copyNodes(arr) {
+    let na = new Array()
+
+    arr.forEach(n => {
+        let nn = new Node(n.x,n.y,n.name);
+
+        nn.mode = n.mode;
+        nn.sizeMultiplier = n.sizeMultiplier;
+        nn.size = n.size;
+        nn.xVel = n.xVel;
+        nn.yVel = n.yVel;
+        na.push(nn);
+    });
+
+    return na;
 }
 
 let saveButton;
@@ -197,6 +254,20 @@ function setup() {
             fileopen()
         }
     });
+    document.addEventListener('keydown', e => {
+        if (e.ctrlKey && e.key === 'z') {
+            e.preventDefault();
+
+            undo();
+        }
+    });
+    document.addEventListener('keydown', e => {
+        if (e.ctrlKey && e.key === 'y') {
+            e.preventDefault();
+
+            redo();
+        }
+    });
 
 }
 
@@ -266,6 +337,11 @@ let helpSize = 0;
 // sequence and after the last line is read, the first
 // line is executed again.
 function draw() {
+
+    if (document.hasFocus()) frameRate(60); else frameRate(15);
+
+    undoButton.disabled = undoBuffer == null;
+    redoButton.disabled = redoBuffer == null;
 
 
     backgroundColor = bgp.value;
