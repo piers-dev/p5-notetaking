@@ -84,7 +84,7 @@ function loadFromFile() {
 function stepUndo() {
     undoBuffer.push(copyNodes(nodes));
     redoBuffer = new Array();
-    if (undoBuffer.length > 16) undoBuffer.splice(0);
+    if (undoBuffer.length > 16) undoBuffer.splice(0,1);
 
 }
 
@@ -521,7 +521,8 @@ function draw() {
 
 
     removalQueue.forEach((i) => {
-        nodes.splice(i, 1);
+        if (nodes[i].name != "") stepUndo();
+        nodes.splice(i,1);
     });
 
 
@@ -555,6 +556,7 @@ function draw() {
 }
 
 function addNote(organiser = false) {
+    stepUndo();
     let x = (((width/2) / zoom) - width / 2) - xPan / zoom;
     let y = (((height/2) / zoom) - height / 2) - yPan / zoom;
 
@@ -609,6 +611,7 @@ function keyPressed() {
 function doubleClicked(event) {
     if (editing != -1) return;
     if (mouseY > height - 50) return;
+    stepUndo();
     nodes.push(new Node(mx - xPan / zoom, my - yPan / zoom, ""));
     editing = nodes.length - 1;
     createParticleBurst(mx - xPan/zoom, my - yPan/zoom, 1, 5, 5, 10, 10, 0.5, 1);

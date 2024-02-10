@@ -265,6 +265,7 @@ class Node {
                 targetSize *= 0.7;
             }
             if ((this.isHovered && !rmb && prmb) || this.name == "") {
+                
                 removalQueue.push(nodes.indexOf(this));
                 createParticleBurst(this.x, this.y, 1, 4, 5, 20, 20, 0.1, .5,this.mode);
 
