@@ -335,6 +335,9 @@ function draw() {
         yPanVel = dy * zoom;
         //createParticleBurst(Math.random() * width - width / 2 - xPan, Math.random() * height - height / 2 - yPan, 0.1, 0.3, 2, 5, Math.random() * 3, 1, 2);
 
+        document.documentElement.style.cursor = 'none';
+
+        circle(mouseX,mouseY,15);
 
 
     }
@@ -342,6 +345,9 @@ function draw() {
         xPanVel = lerp(xPanVel, 0, 0.1);
         yPanVel = lerp(yPanVel, 0, 0.1);
 
+        document.documentElement.style.cursor = 'auto';
+
+        //cursor();
     }
 
     xPan += xPanVel;

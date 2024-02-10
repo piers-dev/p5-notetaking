@@ -6,7 +6,7 @@ let specialColor = "#e6176a";
 
 //2bc7ff
 
-function checkBounds(x,y,lowx,highx,lowy,highy) {
+function checkBounds(x, y, lowx, highx, lowy, highy) {
     return ((x < highx && x > lowx)
         && (y < highy && y > lowy));
 }
@@ -74,8 +74,8 @@ class Node {
         let editingOther = !editingSelf && (editing != -1)
 
 
-        let mouseOver = ((pmx-xPan/zoom < this.x - 10 + this.width / 2 && pmx-xPan/zoom > this.x - 10 - this.width / 2)
-        && (pmy-yPan/zoom < this.y + this.height / 2 && pmy-yPan/zoom > this.y - this.height / 2));
+        let mouseOver = ((pmx - xPan / zoom < this.x - 10 + this.width / 2 && pmx - xPan / zoom > this.x - 10 - this.width / 2)
+            && (pmy - yPan / zoom < this.y + this.height / 2 && pmy - yPan / zoom > this.y - this.height / 2));
 
         this.isHovered = ((mouseOver && !hoverUsed) || this.isSelected) && editing == -1;
 
@@ -93,7 +93,7 @@ class Node {
 
 
         textSize(40 * this.size);
-        
+
 
         this.width = textWidth(this.name) + 20;
         this.height = 50 * this.sizeMultiplier;
@@ -108,36 +108,36 @@ class Node {
                 //this.input.style('font-family','Raleway');
                 //this.input.style('stroke','none');
                 //this.input.style('outline','none');
-                this.input.style('border-radius',`${15*zoom}px`);
+                this.input.style('border-radius', `${15 * zoom}px`);
                 //this.input.style('border-style','solid');
-                this.input.style('border-color',color);
-                this.input.style('background-color',backgroundColor);
-                this.input.style('color',color);
-                this.input.style('user-select','text');
+                this.input.style('border-color', color);
+                this.input.style('background-color', backgroundColor);
+                this.input.style('color', color);
+                this.input.style('user-select', 'text');
 
-                this.input.style('border-width',`${6*zoom}px`);
+                this.input.style('border-width', `${6 * zoom}px`);
                 this.input.attribute('maxlength', 30);
             }
             this.name = this.input.value();
 
             this.width = textWidth(this.name) + 20;
 
-            this.height = 50*this.size/2;
-            mouseOver = ((pmx-xPan/zoom < this.x  + this.width/2 && pmx-xPan/zoom > this.x - 10 - this.width/2)
-                && (pmy-yPan/zoom < this.y + this.height/2 && pmy-yPan/zoom > this.y - this.height/2));
-            
+            this.height = 50 * this.size / 2;
+            mouseOver = ((pmx - xPan / zoom < this.x + this.width / 2 && pmx - xPan / zoom > this.x - 10 - this.width / 2)
+                && (pmy - yPan / zoom < this.y + this.height / 2 && pmy - yPan / zoom > this.y - this.height / 2));
+
             if (mouseOver) targetSize += 0.5;
-            
 
 
 
-            
-            
 
-            this.input.position(((this.x*zoom+width*zoom/2)-this.width*zoom/2)+xPan-12*zoom,((this.y*zoom+height*zoom/2)-this.height*zoom)+yPan-6*zoom);
 
-            this.input.size((this.width*zoom-12*zoom),(this.height*zoom*2-12*zoom));
-            this.input.style('font-size',`${40*this.size*zoom}px`);
+
+
+            this.input.position(((this.x * zoom + width * zoom / 2) - this.width * zoom / 2) + xPan - 12 * zoom, ((this.y * zoom + height * zoom / 2) - this.height * zoom) + yPan - 6 * zoom);
+
+            this.input.size((this.width * zoom - 12 * zoom), (this.height * zoom * 2 - 12 * zoom));
+            this.input.style('font-size', `${40 * this.size * zoom}px`);
             this.isSelected = mouseOver;
 
 
@@ -155,7 +155,7 @@ class Node {
 
 
 
-        
+
 
 
         this.xVel = lerp(this.xVel, 0, 0.65);
@@ -170,17 +170,17 @@ class Node {
         let vx = -this.x;
         let vy = -this.y;
 
-        let vl = Math.sqrt(this.x*this.x+this.y*this.y);
+        let vl = Math.sqrt(this.x * this.x + this.y * this.y);
 
         if (vl > 2400) {
             vx /= vl;
             vy /= vl;
 
             vl -= 2000;
-            vl = Math.max(vl,0);
+            vl = Math.max(vl, 0);
 
-            this.xVel += vx*vl;
-            this.yVel += vy*vl;
+            this.xVel += vx * vl;
+            this.yVel += vy * vl;
         }
 
         this.x += this.xVel / 30;
@@ -190,19 +190,19 @@ class Node {
         //if (Math.abs(this.xVel) + Math.abs(this.yVel) > 200) {
         //    createParticleBurst(this.x, this.y, 1, 5, 2, 5, 1, 0.2, 1);
         //}
-        
+
 
         if (this.mode) {
             //createParticleBurst(this.x,this.y,0.5*this.size,2*this.size,1,3,1,1,5,true);
-            fill(color+"05");
-            strokeWeight(this.isHovered ? 3.5*zoom : 1.5*zoom);
+            fill(color + "05");
+            strokeWeight(this.isHovered ? 3.5 * zoom : 1.5 * zoom);
             stroke(specialColor);
-            circle(this.x*zoom+width*zoom/2+xPan-10*zoom,this.y*zoom+height*zoom/2+yPan,lerp(this.size*this.size,this.sizeMultiplier*this.sizeMultiplier,0.5)*1000*zoom);
+            circle(this.x * zoom + width * zoom / 2 + xPan - 10 * zoom, this.y * zoom + height * zoom / 2 + yPan, lerp(this.size * this.size, this.sizeMultiplier * this.sizeMultiplier, 0.5) * 1000 * zoom);
         }
 
 
 
-        
+
         if (!editingSelf) {
 
             if (Date.now() - this.lastClicked < 200 && plmb && !lmb) {
@@ -238,7 +238,7 @@ class Node {
                 //createParticleBurst(this.x, this.y, 1, 3, 5, 10, 20, 0.1, .5);
 
             }
-            
+
             if (this.isHovered && !(lmb && !this.isSelected)) {
                 targetSize *= this.mode ? 1.05 : 1.1;
 
@@ -247,59 +247,61 @@ class Node {
                     this.y += dy;
                     targetSize *= this.mode ? 1.1 : 1.3;
                     this.attractionForce *= 2;
+                    document.documentElement.style.cursor = 'move';
+
                 }
                 fill(this.isSelected ? color : backgroundColor);
-                strokeWeight(this.isSelected ? 0 : 3*zoom);
+                strokeWeight(this.isSelected ? 0 : 3 * zoom);
                 stroke(color);
 
-                rect((((this.x*zoom+width*zoom/2) - 10*zoom) - this.width*zoom / 2)+xPan, ((this.y*zoom+height*zoom/2) - 25 * this.size*zoom)+yPan, this.width*zoom, 50 * this.size*zoom, 15)
+                rect((((this.x * zoom + width * zoom / 2) - 10 * zoom) - this.width * zoom / 2) + xPan, ((this.y * zoom + height * zoom / 2) - 25 * this.size * zoom) + yPan, this.width * zoom, 50 * this.size * zoom, 15)
 
 
 
             }
 
-            
-            
-            
 
 
-            strokeWeight(this.isSelected ? 0 : 6*zoom);
+
+
+
+            strokeWeight(this.isSelected ? 0 : 6 * zoom);
             stroke(backgroundColor);
             fill(this.isSelected ? backgroundColor : color);
 
 
             //this.input.position(((this.x) - this.width / 2)+width/2, ((this.y) + 15)+height/2);
 
-            
-            let strike = (this.name[0] == '-' && this.name[this.name.length-1] == '-');
 
-            textSize(40*this.size*zoom)
+            let strike = (this.name[0] == '-' && this.name[this.name.length - 1] == '-');
 
-            text(this.name, ((this.x*zoom+width*zoom/2) - this.width*zoom / 2)+xPan, ((this.y*zoom+height*zoom/2) + 15 * this.size*zoom)+yPan);
+            textSize(40 * this.size * zoom)
+
+            text(this.name, ((this.x * zoom + width * zoom / 2) - this.width * zoom / 2) + xPan, ((this.y * zoom + height * zoom / 2) + 15 * this.size * zoom) + yPan);
 
             stroke(color);
 
-            strokeWeight(this.size*zoom*4);
-            
-            if (strike) line(this.x*zoom-this.width*zoom/2+xPan+width*zoom/2,this.y*zoom+height*zoom/2+4*this.size*zoom+yPan,this.x*zoom+this.width*zoom/2+xPan+width*zoom/2-20,this.y*zoom+height*zoom/2+4*this.size*zoom+yPan);
+            strokeWeight(this.size * zoom * 4);
+
+            if (strike) line(this.x * zoom - this.width * zoom / 2 + xPan + width * zoom / 2, this.y * zoom + height * zoom / 2 + 4 * this.size * zoom + yPan, this.x * zoom + this.width * zoom / 2 + xPan + width * zoom / 2 - 20, this.y * zoom + height * zoom / 2 + 4 * this.size * zoom + yPan);
         }
-        
 
 
 
-        if (editingSelf) targetSize = Math.min(this.sizeMultiplier,3.5);
+
+        if (editingSelf) targetSize = Math.min(this.sizeMultiplier, 3.5);
 
         this.size = lerp(this.size, targetSize, 0.2);
 
         return this.isSelected;
     }
 
-    
+
 
     applyForces(node) {
 
 
-        let cw = ((node.width + this.width) / this.size)/2 * (this.size / 2) + 200;
+        let cw = ((node.width + this.width) / this.size) / 2 * (this.size / 2) + 200;
         let ch = (node.height + this.height) / 4 + 150;
         let woh = (cw / ch);
 
@@ -351,23 +353,23 @@ class Node {
         //nyv *= 0.5;
 
 
-        this.xVel += nxv*node.repulsionForce;
-        this.yVel += nyv*node.repulsionForce;
+        this.xVel += nxv * node.repulsionForce;
+        this.yVel += nyv * node.repulsionForce;
 
 
-        let range = lerp(node.size*node.size,node.sizeMultiplier*node.sizeMultiplier,0.5)*500;
+        let range = lerp(node.size * node.size, node.sizeMultiplier * node.sizeMultiplier, 0.5) * 500;
 
-        if (!node.mode) range*= 0.05;
+        if (!node.mode) range *= 0.05;
         nxv = this.x - node.x;
         nyv = this.y - node.y;
 
-        let inRange = (nxv*nxv+nyv*nyv) < range*range;
+        let inRange = (nxv * nxv + nyv * nyv) < range * range;
 
         nxv /= range;
         nyv /= range;
 
-        nxv *= lerp(1-Math.abs(nxv),1,0.5);
-        nyv *= lerp(1-Math.abs(nyv),1,0.5);
+        nxv *= lerp(1 - Math.abs(nxv), 1, 0.5);
+        nyv *= lerp(1 - Math.abs(nyv), 1, 0.5);
 
 
         nxv *= range;
@@ -376,25 +378,25 @@ class Node {
 
 
         if (inRange) {
-            this.xVel -= nxv*node.attractionForce*this.size;
-            this.yVel -= nyv*node.attractionForce*this.size;
+            this.xVel -= nxv * node.attractionForce * this.size;
+            this.yVel -= nyv * node.attractionForce * this.size;
 
 
             if (node.mode) {
-                fill(specialColor+"50");
-                
+                fill(specialColor + "50");
+
                 noStroke();
 
-                let lx = lerp(this.x,node.x,0.3)*zoom;
-                let ly = lerp(this.y,node.y,0.3)*zoom;
-                circle(lx+xPan+width*zoom/2,ly+yPan+height*zoom/2,6*zoom);
+                let lx = lerp(this.x, node.x, 0.3) * zoom;
+                let ly = lerp(this.y, node.y, 0.3) * zoom;
+                circle(lx + xPan + width * zoom / 2, ly + yPan + height * zoom / 2, 6 * zoom);
 
-                strokeWeight(5*zoom);
-                stroke(specialColor+"22");
+                strokeWeight(5 * zoom);
+                stroke(specialColor + "22");
 
 
 
-                line(lx+xPan+width*zoom/2,ly+yPan+height*zoom/2,node.x*zoom+xPan+width*zoom/2,node.y*zoom+yPan+height*zoom/2);
+                line(lx + xPan + width * zoom / 2, ly + yPan + height * zoom / 2, node.x * zoom + xPan + width * zoom / 2, node.y * zoom + yPan + height * zoom / 2);
             }
         }
 
