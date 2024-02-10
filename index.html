@@ -64,6 +64,11 @@
 
     <div id="menuBar">
         <div>
+            <script>
+                function copylink() {
+                    window.open("/?data=\""+encodeURIComponent(btoa(JSON.stringify(nodesToObj(nodes))))+"\"");
+                }
+            </script>
             <sl-tooltip id="helpMenu">
                 <div slot="content" class="tooltip">
 
@@ -103,6 +108,14 @@
             <sl-tooltip content="Open From File">
                 <button class="uiComponent" onclick="fileopen()">
                     <sl-icon name="folder2-open" style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
+
+                </button>
+
+
+            </sl-tooltip>
+            <sl-tooltip content="Share Link">
+                <button class="uiComponent" onclick="copylink()">
+                    <sl-icon name="share" style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
 
                 </button>
 
@@ -159,6 +172,7 @@
                 function opentwitter() {
                     window.open("https://twitter.com/@Pixstatic","_blank");
                 }
+                
             </script>
             <sl-tooltip content="My Website">
                 <button class="uiComponent" onclick="openwebsite()">

@@ -61,7 +61,11 @@ class Node {
 
     processMouse(delta) {
         if (this.isHovered) {
-            if (delta > 50) this.lastScrolled = Date.now();
+            if (Math.abs(delta) > 50) {
+                if (Date.now()-this.lastScrolled > 300) stepUndo();
+
+                this.lastScrolled = Date.now();
+            }
 
             this.sizeMultiplier -= (delta * this.sizeMultiplier) / 1000;
             this.sizeMultiplier = Math.max(this.sizeMultiplier, 0.5);
@@ -183,7 +187,7 @@ class Node {
         }
 
 
-        if (Date.now()-this.lastScrolled > 500 && lastFrameTime - this.lastScrolled < 500) stepUndo();
+        
 
         let vx = -this.x;
         let vy = -this.y;
