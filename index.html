@@ -20,32 +20,29 @@
     <input type="color" id="fg" onchange="updateFG()">
     <input type="color" id="sg" onchange="updateSG()">
     <div id="overlay">
-        <div>
-            <sl-tooltip content="Outside Colour" placement="right">
-                <button class="colorSelect" onclick="document.getElementById('og').click()"
+        
+            <sl-tooltip content="Outside Colour" placement="bottom">
+                <button class="uiComponent" onclick="document.getElementById('og').click()"
                     style="background-color: var(--outground);"></button>
             </sl-tooltip>
-        </div>
-        <div>
-            <sl-tooltip content="Background Colour" placement="right">
-                <button class="colorSelect" onclick="document.getElementById('bg').click()"
+        
+            <sl-tooltip content="Background Colour" placement="bottom">
+                <button class="uiComponent" onclick="document.getElementById('bg').click()"
                     style="background-color: var(--background);"></button>
             </sl-tooltip>
-        </div>
-        <div>
-            <sl-tooltip content="Foreground Colour" placement="right">
-                <button class="colorSelect" onclick="document.getElementById('fg').click()"
+        
+            <sl-tooltip content="Foreground Colour" placement="bottom">
+                <button class="uiComponent" onclick="document.getElementById('fg').click()"
                     style="background-color: var(--foreground);"></button>
             </sl-tooltip>
-        </div>
-        <div>
-            <sl-tooltip content="Special Colour" placement="right">
-                <button class="colorSelect" onclick="document.getElementById('sg').click()"
-                    style="background-color: var(--special); border-bottom-right-radius: 50%;"></button>
+        
+            <sl-tooltip content="Special Colour" placement="bottom">
+                <button class="uiComponent" onclick="document.getElementById('sg').click()"
+                    style="background-color: var(--special);"></button>
             </sl-tooltip>
-        </div>
+        
 
-        <sl-icon name="palette" style="color: var(--foreground); width: 30px; height: 30px; padding: 10px;"></sl-icon>
+        <sl-icon name="palette" style="color: var(--foreground); width: 40px; height: 40px;"></sl-icon>
 
 
 
