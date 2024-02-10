@@ -400,6 +400,9 @@ function draw() {
 
     nodes.forEach((n) => {
         if (!n.mode) return;
+        nodes.forEach((nf) => {
+            if (nf != n) n.drawRelationship(nf);
+        });
         let nd = n.drawSelf();
         selection = selection || nd;
     });
@@ -410,6 +413,7 @@ function draw() {
         if (n.mode) return;
         nodes.forEach((nf) => {
             if (nf != n) n.applyForces(nf);
+            if (nf != n) n.drawRelationship(nf);
         });
         let nd = n.drawSelf();
         selection = selection || nd;

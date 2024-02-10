@@ -210,6 +210,18 @@ class Node {
         if (!editingSelf) {
 
             if (Date.now() - this.lastClicked < 200 && plmb && !lmb) {
+
+                if (keyIsDown(ALT)) {
+                    let n = new Node(this.x, this.y-this.height*1.5,this.name);
+                    n.sizeMultiplier = this.sizeMultiplier;
+                    n.mode = this.mode;
+
+                    nodes.push(n);
+                    editing = nodes.length-1;
+                    return false;
+                }
+
+
                 editing = nodes.indexOf(this);
                 editingSelf = true;
                 return true;
@@ -404,5 +416,16 @@ class Node {
             }
         }
 
+
+        
+    }
+
+    drawRelationship(node) {
+        if (this.name == node.name && nodes.indexOf(this) < nodes.indexOf(node)) {
+            strokeWeight(5 * zoom);
+            stroke((this.mode && node.mode ? specialColor : foregroundColor) + "22");
+
+            line(this.x*zoom + xPan + width * zoom / 2, this.y*zoom + yPan + height * zoom / 2, node.x * zoom + xPan + width * zoom / 2, node.y * zoom + yPan + height * zoom / 2);
+        }
     }
 }

@@ -67,11 +67,14 @@
             <sl-tooltip id="helpMenu">
                 <div slot="content" class="tooltip">
 
-                    <h2> <sl-icon name="file-earmark-plus" style=" width: 25px; height: 25px;"></sl-icon> Add Note </h2>
+                    <h2> <sl-icon name="plus-circle" style=" width: 25px; height: 25px;"></sl-icon> Add Note </h2>
                     <p> - Double-Click anywhere to Add a Note</p><br>
+                    <h2> <sl-icon name="copy" style=" width: 25px; height: 25px;"></sl-icon> Duplicate Note </h2>
+                    <p> - Alt+Click on any Note to Duplicate</p><br>
                     <h2> <sl-icon name="pencil" style=" width: 25px; height: 25px;"></sl-icon> Edit Note </h2>
                     <p> - Click on a Note to Edit it<br> - Click and Drag to Move<br> - Scroll while Hovering to Adjust
                         Size</p><br>
+                    
                     <h2> <sl-icon name="trash" style=" width: 25px; height: 25px;"></sl-icon> Remove Note </h2>
                     <p> - Right-Click on any Note to Remove it</p><br>
                     <h2> <sl-icon name="stars" style=" width: 25px; height: 25px;"></sl-icon> Organisers </h2>
@@ -127,6 +130,34 @@
 
             </sl-tooltip>
 
+        </div>
+    </div>
+    <div id="socialBar">
+        <div>
+            <script>
+                function openwebsite() {
+                    window.open("https://piersbaker.net/","_blank");
+                }
+                function opentwitter() {
+                    window.open("https://twitter.com/@Pixstatic","_blank");
+                }
+            </script>
+            <sl-tooltip content="My Website">
+                <button class="uiComponent" onclick="openwebsite()">
+                    <sl-icon name="box-arrow-up-right" style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
+
+                </button>
+
+
+            </sl-tooltip>
+            <sl-tooltip content="My Twitter">
+                <button class="uiComponent" onclick="opentwitter()">
+                    <sl-icon name="twitter" style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
+
+                </button>
+
+
+            </sl-tooltip>
         </div>
     </div>
 
