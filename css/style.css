@@ -122,7 +122,7 @@ html, body {
 }
 #canvasBar {
     position: absolute;
-    right: 3px;
+    right: 5px;
     bottom: 8px;
     height: 88px;
     
