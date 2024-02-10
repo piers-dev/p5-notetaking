@@ -4,7 +4,7 @@ let outgroundColor = "#0e0d11";
 let foregroundColor = "#ffffff";
 let specialColor = "#e6176a";
 
-
+//2bc7ff
 
 function checkBounds(x,y,lowx,highx,lowy,highy) {
     return ((x < highx && x > lowx)
