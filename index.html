@@ -3,7 +3,12 @@
 
 <head>
     <script src="js/p5/p5.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.13.1/cdn/themes/light.css" />
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.13.1/cdn/shoelace-autoloader.js"></script>
     <link rel="stylesheet" href="css/style.css" />
+
+
 
 </head>
 
@@ -15,19 +20,88 @@
     <input type="color" id="fg" onchange="updateFG()">
     <input type="color" id="sg" onchange="updateSG()">
     <div id="overlay">
-        <button class="colorSelect" onclick="document.getElementById('og').click()" style="background-color: var(--outground);">
+        <div>
+            <sl-tooltip content="Outside Colour" placement="right">
+                <button class="colorSelect" onclick="document.getElementById('og').click()"
+                    style="background-color: var(--outground);"></button>
+            </sl-tooltip>
+        </div>
+        <div>
+            <sl-tooltip content="Background Colour" placement="right">
+                <button class="colorSelect" onclick="document.getElementById('bg').click()"
+                    style="background-color: var(--background);"></button>
+            </sl-tooltip>
+        </div>
+        <div>
+            <sl-tooltip content="Foreground Colour" placement="right">
+                <button class="colorSelect" onclick="document.getElementById('fg').click()"
+                    style="background-color: var(--foreground);"></button>
+            </sl-tooltip>
+        </div>
+        <div>
+            <sl-tooltip content="Special Colour" placement="right">
+                <button class="colorSelect" onclick="document.getElementById('sg').click()"
+                    style="background-color: var(--special); border-bottom-right-radius: 50%;"></button>
+            </sl-tooltip>
+        </div>
 
-        <button class="colorSelect" onclick="document.getElementById('bg').click()" style="background-color: var(--background);">
+        <sl-icon name="palette" style="color: var(--foreground); width: 30px; height: 30px; padding: 10px;"></sl-icon>
 
-        <button class="colorSelect" onclick="document.getElementById('fg').click()" style="background-color: var(--foreground);">
 
-        <button class="colorSelect" onclick="document.getElementById('sg').click()" style="background-color: var(--special); border-bottom-right-radius: 50%;">
 
+    </div>
+
+    
+
+    <div id="menuBar">
+        <div>
+            <sl-tooltip id="helpMenu">
+                <div slot="content" class="tooltip">
+
+                    <h2> <sl-icon name="file-earmark-plus" style=" width: 25px; height: 25px;"></sl-icon> Add Note </h2>
+                    <p> - Double-Click anywhere to Add a Note</p><br>
+                    <h2> <sl-icon name="pencil" style=" width: 25px; height: 25px;"></sl-icon> Edit Note </h2>
+                    <p> - Click on a Note to Edit it<br> - Click and Drag to Move<br> - Scroll while Hovering to Adjust
+                        Size</p><br>
+                    <h2> <sl-icon name="trash" style=" width: 25px; height: 25px;"></sl-icon> Remove Note </h2>
+                    <p> - Right-Click on any Note to Remove it</p><br>
+                    <h2> <sl-icon name="stars" style=" width: 25px; height: 25px;"></sl-icon> Organisers </h2>
+                    <p> - Middle-Click on any Note to Toggle Gravity</p><br>
+                    <h2> <sl-icon name="arrows-move" style=" width: 25px; height: 25px;"></sl-icon> Canvas </h2>
+                    <p> - Middle-Click and Drag to Pan<br> - Scroll to Zoom</p><br>
+
+
+                </div>
+                <button class="uiComponent" width="50px" height="50px">
+                    <sl-icon name="question-circle"
+                        style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
+
+                </button>
+
+
+            </sl-tooltip>
+            <sl-tooltip content="Save To File">
+                <button class="uiComponent" width="50px" height="50px" onclick="filesave()">
+                    <sl-icon name="floppy" style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
+
+                </button>
+
+
+            </sl-tooltip>
+            <sl-tooltip content="Open From File">
+                <button class="uiComponent" width="50px" height="50px" onclick="openfile()">
+                    <sl-icon name="folder2-open" style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
+
+                </button>
+
+
+            </sl-tooltip>
+        </div>
     </div>
 
 
 
-    <div id="canvas" ></div>
+    <div id="canvas"></div>
 
 
     <script src="js/notenode.js"></script>

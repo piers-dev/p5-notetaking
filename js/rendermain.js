@@ -186,23 +186,34 @@ function setup() {
 
     document.addEventListener('keydown', e => {
         if (e.ctrlKey && e.key === 's') {
-            // Prevent the Save dialog to open
             e.preventDefault();
-            // Place your code here
-            download(JSON.stringify(nodesToObj(nodes)), "Untitled.board", String);
+            filesave()
         }
     });
     document.addEventListener('keydown', e => {
         if (e.ctrlKey && e.key === 'o') {
-            // Prevent the Save dialog to open
             e.preventDefault();
-            // Place your code here
-            let fl = document.getElementById('fileLoad');
-            fl.click();
+
+            fileopen()
         }
     });
 
 }
+
+function filesave() {
+    // Prevent the Save dialog to open
+    // Place your code here
+    download(JSON.stringify(nodesToObj(nodes)), "*.board", String);
+}
+
+function fileopen() {
+    // Prevent the Save dialog to open
+
+    // Place your code here
+    let fl = document.getElementById('fileLoad');
+    fl.click();
+}
+
 function radiusClamp(x, y, radius, x2, y2) {
     let nx = x - x2;
     let ny = y - y2;
@@ -247,6 +258,8 @@ function nodesToObj(array) {
     });
     return o;
 }
+
+let helpSize = 0;
 
 // The statements in draw() are executed until the
 // program is stopped. Each statement is executed in
@@ -420,14 +433,27 @@ function draw() {
     pmmb = mmb;
 
 
+    if (nodes.length < 1)
+        helpSize = lerp(helpSize,1,0.2);
+    else
+        helpSize = lerp(helpSize,0,0.2);
 
-    if (nodes.length < 1) {
-        fill(foregroundColor);
-        noStroke();
+    fill(specialColor + "11");
+    stroke(specialColor);
+    strokeWeight(4);
 
-        textSize(40);
-        text("Double-Click to Add Node", 20, height - 20);
-    }
+    circle(50*helpSize, lerp(height,height + 50,helpSize), 600*helpSize);
+    strokeWeight(2);
+
+    circle(50*helpSize, height + 50*helpSize, 625*helpSize);
+
+    fill(foregroundColor);
+    noStroke();
+
+    textSize(35*helpSize);
+    text("Hover for Help", (3*helpSize), height - 100*helpSize);
+    triangle(15*helpSize, height - 85*helpSize, 45*helpSize, height - 85*helpSize, 30*helpSize, height - 70*helpSize)
+
 }
 
 
@@ -453,13 +479,13 @@ function mouseWheel(event) {
         let dxp = (zoom * width / 2) - width / 2;
         let dyp = (zoom * height / 2) - height / 2;
 
-        
+
         let newPan = radiusClamp(xPan, yPan, 2450 * zoom, -dxp, -dyp);
 
 
 
         xPan = newPan['x'];
-        yPan = newPan['y']; 
+        yPan = newPan['y'];
 
     }
 }
@@ -472,6 +498,7 @@ function keyPressed() {
 
 function doubleClicked(event) {
     if (editing != -1) return;
+    if (mouseY > height - 50) return;
     nodes.push(new Node(mx - xPan / zoom, my - yPan / zoom, "New Note"));
     editing = nodes.length - 1;
     //createParticleBurst(mx - xPan, my - yPan, 1, 5, 5, 10, 10, 0.5, 1);
