@@ -5,6 +5,11 @@
     --special: "#2bc7ff";
   }
 
+@font-face {
+    font-family: 'Raleway';
+    src: url('/fonts/Raleway-Regular.ttf');
+}
+
 #canvas {
 
     width: 100vw;
