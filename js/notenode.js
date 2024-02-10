@@ -117,6 +117,10 @@ class Node {
 
                 this.input.style('border-width', `${6 * zoom}px`);
                 this.input.attribute('maxlength', 30);
+                this.input.elt.focus();
+                this.input.elt.select();
+                //else this.input.elt.select(this.name.length,this.name.length);
+
             }
             this.name = this.input.value();
 
