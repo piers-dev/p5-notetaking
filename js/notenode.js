@@ -196,9 +196,9 @@ class Node {
         this.y += this.yVel / 30;
 
 
-        //if (Math.abs(this.xVel) + Math.abs(this.yVel) > 200) {
-        //    createParticleBurst(this.x, this.y, 1, 5, 2, 5, 1, 0.2, 1);
-        //}
+        if (Math.abs(this.xVel) + Math.abs(this.yVel) > 200) {
+            createParticleBurst(this.x, this.y, 1, 5, 5, 10, 1, 0.2, 1);
+        }
 
 
         if (this.mode) {
@@ -251,6 +251,8 @@ class Node {
 
                     this.mode = !this.mode;
                     this.size *= 0.9;
+                    createParticleBurst(this.x, this.y, 3, 7, 5, 50, 10, 0.1, .5,this.mode);
+
                 }
             }
 
@@ -260,7 +262,7 @@ class Node {
             }
             if ((this.isHovered && !rmb && prmb) || this.name == "") {
                 removalQueue.push(nodes.indexOf(this));
-                //createParticleBurst(this.x, this.y, 1, 3, 5, 10, 20, 0.1, .5);
+                createParticleBurst(this.x, this.y, 1, 3, 5, 10, 20, 0.1, .5);
 
             }
 

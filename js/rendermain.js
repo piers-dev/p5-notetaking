@@ -6,8 +6,8 @@ let bgdiv
 
 let nodes = new Array()
 
-let undoBuffer = null;
-let redoBuffer = null;
+let undoBuffer = new Array();
+let redoBuffer = new Array();
 
 
 let font;
@@ -82,31 +82,44 @@ function loadFromFile() {
 }
 
 function stepUndo() {
-    undoBuffer = copyNodes(nodes);
-    redoBuffer = null;
+    undoBuffer.push(copyNodes(nodes));
+    redoBuffer = new Array();
+    if (undoBuffer.length > 16) undoBuffer.splice(0);
+
 }
 
 function undo() {
     editing = -1;
     draw();
-    if (undoBuffer != null) {
-        redoBuffer = copyNodes(nodes);
+    if (undoBuffer.length > 0) {
+        redoBuffer.push(copyNodes(nodes));
 
-        nodes = undoBuffer.concat();
+        nodes = undoBuffer[undoBuffer.length-1].concat();
 
-        undoBuffer = null;
+        undoBuffer.splice(undoBuffer.length-1);
+
+        nodes.forEach(n => {
+            //createParticleBurst(n.x, n.y, 1, 5, 5, 10, 10, 0.5, 1);
+            n.size *= 0.9;
+        });
+
     }
 }
 
 function redo() {
     editing = -1;
     draw();
-    if (redoBuffer != null) {
-        undoBuffer = copyNodes(nodes);
+    if (redoBuffer.length > 0) {
+        undoBuffer.push(copyNodes(nodes));
 
-        nodes = redoBuffer.concat();
+        nodes = redoBuffer[redoBuffer.length-1].concat();
 
-        redoBuffer = null;
+        redoBuffer.splice(redoBuffer.length-1);
+
+        nodes.forEach(n => {
+           
+            n.size *= 1.1;
+        });
     }
 
 }
@@ -340,8 +353,8 @@ function draw() {
 
     if (document.hasFocus()) frameRate(60); else frameRate(15);
 
-    undoButton.disabled = undoBuffer == null;
-    redoButton.disabled = redoBuffer == null;
+    undoButton.disabled = undoBuffer.length == 0;
+    redoButton.disabled = redoBuffer.length == 0;
 
 
     backgroundColor = bgp.value;
@@ -467,7 +480,7 @@ function draw() {
     removalQueue = new Array();
 
 
-    //drawParticles();
+    drawParticles();
     fill(foregroundColor)
     stroke(foregroundColor)
 
@@ -549,6 +562,7 @@ function addNote(organiser = false) {
     editing = nodes.length - 1;
 
     nodes[nodes.length-1].mode = organiser;
+    createParticleBurst(nodes[nodes.length-1].x,nodes[nodes.length-1].y, 1, 5, 5, 10, 10, 0.5, 1);
 
 }
 
@@ -597,6 +611,6 @@ function doubleClicked(event) {
     if (mouseY > height - 50) return;
     nodes.push(new Node(mx - xPan / zoom, my - yPan / zoom, ""));
     editing = nodes.length - 1;
-    //createParticleBurst(mx - xPan, my - yPan, 1, 5, 5, 10, 10, 0.5, 1);
+    createParticleBurst(mx - xPan/zoom, my - yPan/zoom, 1, 5, 5, 10, 10, 0.5, 1);
 }
 

@@ -2,7 +2,7 @@
 let particles = new Array();
 
 function drawParticles() {
-    return;
+    //return;
     let particleDeathQueue = new Array();
     particles.forEach((p) => {
         p.drawSelf();
@@ -55,10 +55,11 @@ class Particle {
         this.y += this.yVel;
 
         fill(this.accent ? specialColor : foregroundColor);
+        noStroke();
 
         let r = this.radius*(1-this.time/this.lifetime);
 
-        circle((this.x+width/2)+xPan,(this.y+height/2)+yPan,Math.max(r,0));
+        circle(zoom*(this.x+width/2)+xPan,zoom*(this.y+height/2)+yPan,Math.max(r,0)*zoom);
 
         
     }
