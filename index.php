@@ -16,10 +16,6 @@
         src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.13.1/cdn/shoelace-autoloader.js"></script>
     <link rel="stylesheet" href="css/style.css" />
 
-    <?php
-    echo "Hello"
-
-    ?>
 
 </head>
 
