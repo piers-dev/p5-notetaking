@@ -241,6 +241,10 @@ class Node {
 
             }
             if (!lmb) {
+                if (this.isSelected && this.mode) {
+                    createParticleBurst(this.x, this.y, 3, 5, 12, 25, 20, .8, .2,this.mode);
+
+                }
                 this.isSelected = false;
             }
 
@@ -262,7 +266,7 @@ class Node {
             }
             if ((this.isHovered && !rmb && prmb) || this.name == "") {
                 removalQueue.push(nodes.indexOf(this));
-                createParticleBurst(this.x, this.y, 1, 3, 5, 10, 20, 0.1, .5);
+                createParticleBurst(this.x, this.y, 1, 4, 5, 20, 20, 0.1, .5,this.mode);
 
             }
 

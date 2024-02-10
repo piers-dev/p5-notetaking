@@ -100,7 +100,7 @@ function undo() {
 
         nodes.forEach(n => {
             //createParticleBurst(n.x, n.y, 1, 5, 5, 10, 10, 0.5, 1);
-            n.size *= 0.9;
+            n.size *= n.mode ? .98 : .9;
         });
 
     }
@@ -118,7 +118,7 @@ function redo() {
 
         nodes.forEach(n => {
            
-            n.size *= 1.1;
+            n.size *= n.mode ? 1.02 : 1.1;
         });
     }
 
@@ -562,7 +562,7 @@ function addNote(organiser = false) {
     editing = nodes.length - 1;
 
     nodes[nodes.length-1].mode = organiser;
-    createParticleBurst(nodes[nodes.length-1].x,nodes[nodes.length-1].y, 1, 5, 5, 10, 10, 0.5, 1);
+    createParticleBurst(nodes[nodes.length-1].x,nodes[nodes.length-1].y, 1, 5, 5, 20, 10, 0.5, 1,organiser);
 
 }
 
