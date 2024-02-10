@@ -38,7 +38,6 @@ class Node {
 
         this.sizeMultiplier = 1;
 
-        this.lastClicked = 0;
 
         this.isHovered = false;
 
@@ -48,6 +47,11 @@ class Node {
         this.attractionForce = 0;
 
         this.mode = false;
+        this.lastClicked = Date.now();
+
+        this.lastScrolled = Date.now();
+
+        
 
     }
 
@@ -57,6 +61,8 @@ class Node {
 
     processMouse(delta) {
         if (this.isHovered) {
+            if (delta > 50) this.lastScrolled = Date.now();
+
             this.sizeMultiplier -= (delta * this.sizeMultiplier) / 1000;
             this.sizeMultiplier = Math.max(this.sizeMultiplier, 0.5);
             this.sizeMultiplier = Math.min(this.sizeMultiplier, 2.5);
@@ -175,6 +181,9 @@ class Node {
             this.yVel = 0;
 
         }
+
+
+        if (Date.now()-this.lastScrolled > 500 && lastFrameTime - this.lastScrolled < 500) stepUndo();
 
         let vx = -this.x;
         let vy = -this.y;

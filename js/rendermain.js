@@ -30,6 +30,8 @@ let removalQueue = new Array();
 
 let editing = -1;
 
+let lastFrameTime = Date.now();
+
 
 
 let xPan = 0;
@@ -84,7 +86,7 @@ function loadFromFile() {
 function stepUndo() {
     undoBuffer.push(copyNodes(nodes));
     redoBuffer = new Array();
-    if (undoBuffer.length > 16) undoBuffer.splice(0,1);
+    if (undoBuffer.length > 32) undoBuffer.splice(0,1);
 
 }
 
@@ -100,7 +102,7 @@ function undo() {
 
         nodes.forEach(n => {
             //createParticleBurst(n.x, n.y, 1, 5, 5, 10, 10, 0.5, 1);
-            n.size *= n.mode ? .98 : .9;
+            n.size *= n.mode ? 1-.02/n.size : .9;
         });
 
     }
@@ -118,7 +120,7 @@ function redo() {
 
         nodes.forEach(n => {
            
-            n.size *= n.mode ? 1.02 : 1.1;
+            n.size *= n.mode ? 1+.02/n.size : 1.1;
         });
     }
 
@@ -527,9 +529,7 @@ function draw() {
 
 
 
-    plmb = lmb;
-    prmb = rmb;
-    pmmb = mmb;
+    
 
 
     if (nodes.length < 1)
@@ -551,7 +551,14 @@ function draw() {
 
     textSize(35*helpSize);
     text("Hover for Help", (3*helpSize), height - 100*helpSize);
-    triangle(15*helpSize, height - 85*helpSize, 45*helpSize, height - 85*helpSize, 30*helpSize, height - 70*helpSize)
+    triangle(15*helpSize, height - 85*helpSize, 45*helpSize, height - 85*helpSize, 30*helpSize, height - 70*helpSize);
+
+
+
+    plmb = lmb;
+    prmb = rmb;
+    pmmb = mmb;
+    lastFrameTime = Date.now()
 
 }
 
