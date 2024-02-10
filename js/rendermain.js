@@ -335,9 +335,8 @@ function draw() {
         yPanVel = dy * zoom;
         //createParticleBurst(Math.random() * width - width / 2 - xPan, Math.random() * height - height / 2 - yPan, 0.1, 0.3, 2, 5, Math.random() * 3, 1, 2);
 
-        document.documentElement.style.cursor = 'none';
+        document.documentElement.style.cursor = 'move';
 
-        circle(mouseX,mouseY,15);
 
 
     }
