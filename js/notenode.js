@@ -1,8 +1,8 @@
 let backgroundColor = "#202029";
 let outgroundColor = "#0e0d11";
 
-let foregroundColor = "#e6176a";
-let specialColor = "#2bc7ff";
+let foregroundColor = "#ffffff";
+let specialColor = "#e6176a";
 
 
 
