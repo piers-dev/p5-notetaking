@@ -51,6 +51,8 @@ class Node {
 
         this.lastScrolled = Date.now();
 
+        this.oldName = "";
+
         
 
     }
@@ -113,27 +115,28 @@ class Node {
         if (editingSelf) {
             if (this.input == null) {
                 //stepUndo();
-
+                this.oldName = this.name
                 this.input = createInput(this.name);
                 this.input.class('ui')
                 //this.input.style('text-align','center');
                 //this.input.style('font-family','Raleway');
                 //this.input.style('stroke','none');
                 //this.input.style('outline','none');
-                this.input.style('border-radius', `${15 * zoom}px`);
                 //this.input.style('border-style','solid');
                 this.input.style('border-color', color);
                 this.input.style('background-color', backgroundColor);
                 this.input.style('color', color);
                 this.input.style('user-select', 'text');
 
-                this.input.style('border-width', `${6 * zoom}px`);
                 this.input.attribute('maxlength', 30);
                 this.input.elt.focus();
                 this.input.elt.select();
                 //else this.input.elt.select(this.name.length,this.name.length);
 
             }
+            this.input.style('border-width', `${6 * zoom}px`);
+            this.input.style('border-radius', `${15 * zoom}px`);
+
             this.name = this.input.value();
 
             this.width = textWidth(this.name) + 20;
@@ -163,6 +166,9 @@ class Node {
             this.input.remove();
             
             this.input = null;
+
+            if (this.name == "") this.name = this.oldName;
+            return false;
 
         }
 
