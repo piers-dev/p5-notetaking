@@ -523,7 +523,10 @@ function draw() {
 
 
     removalQueue.forEach((i) => {
-        if (nodes[i].name != "") stepUndo();
+        if (nodes[i].name == "") {
+            undoBuffer.splice(undoBuffer.length-1,1);
+        }
+        else stepUndo();
         nodes.splice(i,1);
     });
 
@@ -537,14 +540,16 @@ function draw() {
     else
         helpSize = lerp(helpSize,0,0.2);
 
-    fill(specialColor + "11");
     stroke(specialColor);
-    strokeWeight(4);
-
-    circle(50*helpSize, lerp(height,height + 50,helpSize), 600*helpSize);
     strokeWeight(2);
 
-    circle(50*helpSize, height + 50*helpSize, 625*helpSize);
+    fill(backgroundColor+"88");
+
+    circle(50*helpSize, lerp(height,height + 50,helpSize), 625*helpSize);
+    strokeWeight(4);
+    fill(specialColor + "22");
+
+    circle(50*helpSize, height + 50*helpSize, 600*helpSize);
 
     fill(foregroundColor);
     noStroke();

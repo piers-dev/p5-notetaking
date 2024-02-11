@@ -51,6 +51,8 @@ class Node {
 
         this.lastScrolled = Date.now();
 
+        this.oldName = "";
+
         
 
     }
@@ -113,7 +115,7 @@ class Node {
         if (editingSelf) {
             if (this.input == null) {
                 //stepUndo();
-
+                this.oldName = this.name
                 this.input = createInput(this.name);
                 this.input.class('ui')
                 //this.input.style('text-align','center');
@@ -164,6 +166,9 @@ class Node {
             this.input.remove();
             
             this.input = null;
+
+            if (this.name == "") this.name = this.oldName;
+            return false;
 
         }
 
