@@ -120,20 +120,21 @@ class Node {
                 //this.input.style('font-family','Raleway');
                 //this.input.style('stroke','none');
                 //this.input.style('outline','none');
-                this.input.style('border-radius', `${15 * zoom}px`);
                 //this.input.style('border-style','solid');
                 this.input.style('border-color', color);
                 this.input.style('background-color', backgroundColor);
                 this.input.style('color', color);
                 this.input.style('user-select', 'text');
 
-                this.input.style('border-width', `${6 * zoom}px`);
                 this.input.attribute('maxlength', 30);
                 this.input.elt.focus();
                 this.input.elt.select();
                 //else this.input.elt.select(this.name.length,this.name.length);
 
             }
+            this.input.style('border-width', `${6 * zoom}px`);
+            this.input.style('border-radius', `${15 * zoom}px`);
+
             this.name = this.input.value();
 
             this.width = textWidth(this.name) + 20;
