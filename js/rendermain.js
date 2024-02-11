@@ -86,7 +86,7 @@ function loadFromFile() {
 function stepUndo() {
     undoBuffer.push(copyNodes(nodes));
     redoBuffer = new Array();
-    if (undoBuffer.length > 32) undoBuffer.splice(0,1);
+    if (undoBuffer.length > 32) undoBuffer.splice(0, 1);
 
 }
 
@@ -96,13 +96,13 @@ function undo() {
     if (undoBuffer.length > 0) {
         redoBuffer.push(copyNodes(nodes));
 
-        nodes = undoBuffer[undoBuffer.length-1].concat();
+        nodes = undoBuffer[undoBuffer.length - 1].concat();
 
-        undoBuffer.splice(undoBuffer.length-1);
+        undoBuffer.splice(undoBuffer.length - 1);
 
         nodes.forEach(n => {
             //createParticleBurst(n.x, n.y, 1, 5, 5, 10, 10, 0.5, 1);
-            n.size *= n.mode ? 1-.02/n.size : .9;
+            n.size *= n.mode ? 1 - .02 / n.size : .9;
         });
 
     }
@@ -114,13 +114,13 @@ function redo() {
     if (redoBuffer.length > 0) {
         undoBuffer.push(copyNodes(nodes));
 
-        nodes = redoBuffer[redoBuffer.length-1].concat();
+        nodes = redoBuffer[redoBuffer.length - 1].concat();
 
-        redoBuffer.splice(redoBuffer.length-1);
+        redoBuffer.splice(redoBuffer.length - 1);
 
         nodes.forEach(n => {
-           
-            n.size *= n.mode ? 1+.02/n.size : 1.1;
+
+            n.size *= n.mode ? 1 + .02 / n.size : 1.1;
         });
     }
 
@@ -130,7 +130,7 @@ function copyNodes(arr) {
     let na = new Array()
 
     arr.forEach(n => {
-        let nn = new Node(n.x,n.y,n.name);
+        let nn = new Node(n.x, n.y, n.name);
 
         nn.mode = n.mode;
         nn.sizeMultiplier = n.sizeMultiplier;
@@ -453,8 +453,8 @@ function draw() {
 
 
 
-    xPan = newPan['x'];
-    yPan = newPan['y'];
+    xPan = lerp(xPan, newPan['x'], 0.35);
+    yPan = lerp(yPan, newPan['y'], 0.35);
 
 
     hoverUsed = false;
@@ -524,39 +524,39 @@ function draw() {
 
     removalQueue.forEach((i) => {
         if (nodes[i].name == "") {
-            undoBuffer.splice(undoBuffer.length-1,1);
+            undoBuffer.splice(undoBuffer.length - 1, 1);
         }
         else stepUndo();
-        nodes.splice(i,1);
+        nodes.splice(i, 1);
     });
 
 
 
-    
+
 
 
     if (nodes.length < 1)
-        helpSize = lerp(helpSize,1,0.2);
+        helpSize = lerp(helpSize, 1, 0.2);
     else
-        helpSize = lerp(helpSize,0,0.2);
+        helpSize = lerp(helpSize, 0, 0.2);
 
     stroke(specialColor);
     strokeWeight(2);
 
-    fill(backgroundColor+"88");
+    fill(backgroundColor + "88");
 
-    circle(50*helpSize, lerp(height,height + 50,helpSize), 625*helpSize);
+    circle(50 * helpSize, lerp(height, height + 50, helpSize), 625 * helpSize);
     strokeWeight(4);
     fill(specialColor + "22");
 
-    circle(50*helpSize, height + 50*helpSize, 600*helpSize);
+    circle(50 * helpSize, height + 50 * helpSize, 600 * helpSize);
 
     fill(foregroundColor);
     noStroke();
 
-    textSize(35*helpSize);
-    text("Hover for Help", (3*helpSize), height - 100*helpSize);
-    triangle(15*helpSize, height - 85*helpSize, 45*helpSize, height - 85*helpSize, 30*helpSize, height - 70*helpSize);
+    textSize(35 * helpSize);
+    text("Hover for Help", (3 * helpSize), height - 100 * helpSize);
+    triangle(15 * helpSize, height - 85 * helpSize, 45 * helpSize, height - 85 * helpSize, 30 * helpSize, height - 70 * helpSize);
 
 
 
@@ -569,14 +569,14 @@ function draw() {
 
 function addNote(organiser = false) {
     stepUndo();
-    let x = (((width/2) / zoom) - width / 2) - xPan / zoom;
-    let y = (((height/2) / zoom) - height / 2) - yPan / zoom;
+    let x = (((width / 2) / zoom) - width / 2) - xPan / zoom;
+    let y = (((height / 2) / zoom) - height / 2) - yPan / zoom;
 
     nodes.push(new Node(x, y, organiser ? "New Organiser" : "New Note"));
     editing = nodes.length - 1;
 
-    nodes[nodes.length-1].mode = organiser;
-    createParticleBurst(nodes[nodes.length-1].x,nodes[nodes.length-1].y, 1, 5, 5, 20, 10, 0.5, 1,organiser);
+    nodes[nodes.length - 1].mode = organiser;
+    createParticleBurst(nodes[nodes.length - 1].x, nodes[nodes.length - 1].y, 1, 5, 5, 20, 10, 0.5, 1, organiser);
 
 }
 
@@ -626,6 +626,6 @@ function doubleClicked(event) {
     stepUndo();
     nodes.push(new Node(mx - xPan / zoom, my - yPan / zoom, ""));
     editing = nodes.length - 1;
-    createParticleBurst(mx - xPan/zoom, my - yPan/zoom, 1, 5, 5, 10, 10, 0.5, 1);
+    createParticleBurst(mx - xPan / zoom, my - yPan / zoom, 1, 5, 5, 10, 10, 0.5, 1);
 }
 
