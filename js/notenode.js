@@ -225,7 +225,7 @@ class Node {
             fill(color + "05");
             strokeWeight(this.isHovered ? 3.5 * zoom : 1.5 * zoom);
             stroke(specialColor);
-            circle(this.x * zoom + width * zoom / 2 + xPan - 10 * zoom, this.y * zoom + height * zoom / 2 + yPan, lerp(log(this.size+1), this.sizeMultiplier, 0.5) * 1000 * zoom);
+            circle(this.x * zoom + width * zoom / 2 + xPan - 10 * zoom, this.y * zoom + height * zoom / 2 + yPan, lerp(this.size * this.size, this.sizeMultiplier * this.sizeMultiplier, 0.5) * 1000 * zoom);
         }
 
 
@@ -408,7 +408,7 @@ class Node {
         this.yVel += nyv * node.repulsionForce;
 
 
-        let range = lerp(log(node.size+1), node.sizeMultiplier, 0.5) * 1000;
+        let range = lerp(node.size * node.size, node.sizeMultiplier * node.sizeMultiplier, 0.5) * 500;
 
         if (!node.mode) range *= 0.05;
         nxv = this.x - node.x;
