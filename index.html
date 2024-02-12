@@ -82,6 +82,7 @@
                 async function copylink() {
 
                     if (code == null) code = synchronousRequest(`https://share.gravitynotes.net/share/${encodeURIComponent(btoa(JSON.stringify(nodesToObj(nodes))))}`);
+                    else code = synchronousRequest(`https://share.gravitynotes.net/update/${code}/${encodeURIComponent(btoa(JSON.stringify(nodesToObj(nodes))))}`);
                     let url = `https://share.gravitynotes.net/${code}`;
                     navigator.clipboard.writeText(url);
                     window.alert("Link copied to clipboard:\n" + url);
