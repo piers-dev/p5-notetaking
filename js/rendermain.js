@@ -55,7 +55,13 @@ let sgp = document.getElementById('sg');
 let undoButton = document.getElementById('undoButton');
 let redoButton = document.getElementById('redoButton');
 
-
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
 
 function getWidth() {
     return bgdiv.clientWidth;
@@ -107,6 +113,7 @@ function undo() {
 
     }
 }
+
 
 function redo() {
     editing = -1;
@@ -233,6 +240,8 @@ function setup() {
 
     document.getElementById('bg').value = backgroundColor;
     document.getElementById('sg').value = specialColor;
+
+
 
 
     let s = localStorage.getItem("nodes");
