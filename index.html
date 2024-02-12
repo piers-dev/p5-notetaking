@@ -68,6 +68,7 @@
     <div id="menuBar">
         <div>
             <script>
+                let code = null;
                 function synchronousRequest(url) {
                     const xhr = new XMLHttpRequest();
                     xhr.open('GET', url, false);
@@ -79,9 +80,11 @@
                     }
                 }
                 async function copylink() {
-                    let code = synchronousRequest(`https://share.gravitynotes.net/share/${encodeURIComponent(btoa(JSON.stringify(nodesToObj(nodes))))}`);
+
+                    if (code == null) code = synchronousRequest(`https://share.gravitynotes.net/share/${encodeURIComponent(btoa(JSON.stringify(nodesToObj(nodes))))}`);
                     let url = `https://share.gravitynotes.net/${code}`;
-                    window.alert("Link copied to clipboard!\n" + url);
+                    navigator.clipboard.writeText(url);
+                    window.alert("Link copied to clipboard:\n" + url);
                 }
 
             </script>
@@ -131,7 +134,7 @@
             </sl-tooltip>
             <sl-tooltip content="Get Share Link">
                 <button class="uiComponent" onclick="copylink()">
-                    <sl-icon name="folder2-open" style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
+                    <sl-icon name="share" style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
 
                 </button>
 
