@@ -55,13 +55,7 @@ let sgp = document.getElementById('sg');
 let undoButton = document.getElementById('undoButton');
 let redoButton = document.getElementById('redoButton');
 
-function httpGet(theUrl)
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
-    xmlHttp.send( null );
-    return xmlHttp.responseText;
-}
+
 
 function getWidth() {
     return bgdiv.clientWidth;
@@ -187,6 +181,13 @@ function updateSG() {
     localStorage.setItem('sgColor', specialColor);
 }
 
+function lsSave() {
+    localStorage.setItem("nodes", JSON.stringify(nodesToObj(nodes)));
+    localStorage.setItem("zoom", zoom);
+    localStorage.setItem("xPan", xPan);
+    localStorage.setItem("yPan", yPan);
+}
+
 
 // The statements in the setup() function
 // execute once when the program begins
@@ -246,9 +247,24 @@ function setup() {
 
     let s = localStorage.getItem("nodes");
 
+    let params = new URLSearchParams(document.location.search);
+    let d = params.get('data');
 
+
+    if (d && d != '' && window.confirm("Overwrite Saved Graph?")) {
+        
+        
+        s = atob(decodeURIComponent(d));
+        
+    }
 
     if (s != null) nodes = objToNodes(JSON.parse(s));
+
+    if (d) {
+        lsSave()
+        window.location.replace('/')
+    }
+    
 
 
 
@@ -256,10 +272,7 @@ function setup() {
     textFont(font);
 
     setInterval(() => {
-        localStorage.setItem("nodes", JSON.stringify(nodesToObj(nodes)));
-        localStorage.setItem("zoom", zoom);
-        localStorage.setItem("xPan", xPan);
-        localStorage.setItem("yPan", yPan);
+        lsSave();
 
 
     }, 2500);

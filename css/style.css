@@ -1,6 +1,6 @@
 :root {
     --foreground: "#e6176a";
-    --background: "#202029";
+    --background: "#08081b";
     --outground: "#0c021f";
     --special: "#2bc7ff";
 
@@ -26,6 +26,7 @@ html, body {
     margin: 0;
     overflow: hidden;
     user-select: none;
+    background-color: #08081b;
 }
 body {
     position:relative;

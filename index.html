@@ -20,6 +20,10 @@
 </head>
 
 <body oncontextmenu="return false;">
+
+
+
+
     <input type="file" style="display: none;" id="fileLoad" accept=".board" onchange="loadFromFile()" />
     <input type="color" id="bg" onchange="updateBG()">
     <input type="color" id="og" onchange="updateBG()">
@@ -64,9 +68,26 @@
     <div id="menuBar">
         <div>
             <script>
-                function copylink() {
-                    window.open("/?data=\""+encodeURIComponent(btoa(JSON.stringify(nodesToObj(nodes))))+"\"");
+                let code = null;
+                function synchronousRequest(url) {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('GET', url, false);
+                    xhr.send(null);
+                    if (xhr.status === 200) {
+                        return xhr.responseText;
+                    } else {
+                        throw new Error('Request failed: ' + xhr.statusText);
+                    }
                 }
+                async function copylink() {
+
+                    if (code == null) code = synchronousRequest(`https://share.gravitynotes.net/share/${encodeURIComponent(btoa(JSON.stringify(nodesToObj(nodes))))}`);
+                    else code = synchronousRequest(`https://share.gravitynotes.net/update/${code}/${encodeURIComponent(btoa(JSON.stringify(nodesToObj(nodes))))}`);
+                    let url = `https://share.gravitynotes.net/${code}`;
+                    navigator.clipboard.writeText(url);
+                    window.alert("Link copied to clipboard:\n" + url);
+                }
+
             </script>
             <sl-tooltip id="helpMenu">
                 <div slot="content" class="tooltip">
@@ -78,7 +99,7 @@
                     <h2> <sl-icon name="pencil" style=" width: 25px; height: 25px;"></sl-icon> Edit Note </h2>
                     <p> - Click on a Note to Edit it<br> - Click and Drag to Move<br> - Scroll while Hovering to Adjust
                         Size</p><br>
-                    
+
                     <h2> <sl-icon name="trash" style=" width: 25px; height: 25px;"></sl-icon> Remove Note </h2>
                     <p> - Right-Click on any Note to Remove it</p><br>
                     <h2> <sl-icon name="stars" style=" width: 25px; height: 25px;"></sl-icon> Organisers </h2>
@@ -112,11 +133,20 @@
 
 
             </sl-tooltip>
-            
+            <sl-tooltip content="Get Share Link">
+                <button class="uiComponent" onclick="copylink()">
+                    <sl-icon name="share" style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
+
+                </button>
+
+
+            </sl-tooltip>
+
             <span style="margin: 0px 10px;"></span>
             <sl-tooltip content="Undo">
                 <button class="uiComponent" onclick="undo()" id="undoButton">
-                    <sl-icon name="arrow-90deg-left" style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
+                    <sl-icon name="arrow-90deg-left"
+                        style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
 
                 </button>
 
@@ -124,7 +154,8 @@
             </sl-tooltip>
             <sl-tooltip content="Redo">
                 <button class="uiComponent" onclick="redo()" id="redoButton">
-                    <sl-icon name="arrow-90deg-right" style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
+                    <sl-icon name="arrow-90deg-right"
+                        style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
 
                 </button>
 
@@ -143,7 +174,7 @@
 
 
             </sl-tooltip>
-            
+
             <sl-tooltip content="Add Note">
                 <button class="uiComponentBig" onclick="addNote()">
                     <sl-icon name="plus-circle" style="color: var(--foreground); width: 40px; height: 40px;"></sl-icon>
@@ -159,16 +190,17 @@
         <div>
             <script>
                 function openwebsite() {
-                    window.open("https://piersbaker.net/","_blank");
+                    window.open("https://piersbaker.net/", "_blank");
                 }
                 function opentwitter() {
-                    window.open("https://twitter.com/@Pixstatic","_blank");
+                    window.open("https://twitter.com/@Pixstatic", "_blank");
                 }
-                
+
             </script>
             <sl-tooltip content="My Website">
                 <button class="uiComponent" onclick="openwebsite()">
-                    <sl-icon name="box-arrow-up-right" style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
+                    <sl-icon name="box-arrow-up-right"
+                        style="color: var(--foreground); width: 30px; height: 30px;"></sl-icon>
 
                 </button>
 
