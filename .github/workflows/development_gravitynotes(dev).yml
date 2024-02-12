@@ -63,4 +63,4 @@ jobs:
           app-name: 'gravitynotes'
           slot-name: 'dev'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6814102326704FCD9839136992DD9CE7 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8547C3057F594E6EB06CE1BEFEE1B3F5 }}
