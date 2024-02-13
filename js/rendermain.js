@@ -567,7 +567,7 @@ function draw() {
 
     fill(backgroundColor + "88");
 
-    circle(50 * helpSize, lerp(height, height + 50, helpSize), 625 * helpSize);
+    circle(50 * helpSize, height + 50 * helpSize, 625 * helpSize);
     strokeWeight(4);
     fill(specialColor + "22");
 
