@@ -567,18 +567,18 @@ function draw() {
 
     fill(backgroundColor + "88");
 
-    circle(50 * helpSize, height + 50 * helpSize, 625 * helpSize);
+    circle(50 * helpSize, height + 80 * helpSize, 700 * helpSize);
     strokeWeight(4);
     fill(specialColor + "22");
 
-    circle(50 * helpSize, height + 50 * helpSize, 600 * helpSize);
+    circle(50 * helpSize, height + 80 * helpSize, 680 * helpSize);
 
     fill(foregroundColor);
     noStroke();
 
     textSize(35 * helpSize);
-    text("Hover for Help", (3 * helpSize), height - 100 * helpSize);
-    triangle(15 * helpSize, height - 85 * helpSize, 45 * helpSize, height - 85 * helpSize, 30 * helpSize, height - 70 * helpSize);
+    text("Hover for Help", 10, height - 125 * helpSize);
+    triangle(15, height - 100 * helpSize, 45, height - 100 * helpSize, 30, height - 85 * helpSize);
 
 
 
